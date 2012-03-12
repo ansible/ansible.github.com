@@ -4,7 +4,7 @@ SITELIB = $(shell python -c "from distutils.sysconfig import get_python_lib; pri
 
 all: clean docs
 
-docs: clean
+docs: clean htmlman
 	./build-site.py
 
 viewdocs: clean
@@ -19,8 +19,8 @@ htmldocs:
 	 ./build-site.py rst
 
 clean:
-	-rm .buildinfo
-	-rm *.inv
+	-rm -f .buildinfo
+	-rm -f *.inv
 	-rm -rf *.doctrees
 	@echo "Cleaning up byte compiled python stuff"
 	find . -regex ".*\.py[co]$$" -delete

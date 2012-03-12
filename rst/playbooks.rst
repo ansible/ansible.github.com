@@ -180,9 +180,8 @@ contrived example, you could also pass them to the action command line
 or use them inside a template file.
 
 .. note::
-    Note that include statements are only usable from the top level
-    playbook file.  At this time, includes can not include other
-    includes.
+    Include statements are only usable from the top level playbook
+    file.  At this time, includes can not include other includes.
 
 Using Includes To Assign Classes of Systems
 ```````````````````````````````````````````

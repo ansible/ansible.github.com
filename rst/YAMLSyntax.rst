@@ -89,6 +89,7 @@ That's all you really need to know about YAML to get started writing
 
    :doc:`playbooks`
        Learn what playbooks can do and how to write/run them.
+   :doc:`modules`
+       Learn how about all the modules that ship with Ansible.
    `YAMLLint <http://yamllint.com/>`_
-       YAML Lint (online) helps you debug YAML syntax if you are having problems
-
+       YAML Lint (online) helps you debug YAML syntax if you are having problems.
