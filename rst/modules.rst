@@ -187,6 +187,12 @@ prior to usage if you are not running from a playbook.
 
 This module also returns md5sum information about the resultant file.
 
+.. seealso::
+
+   `Jinja2 Template Documentation <http://jinja.pocoo.org/docs/templates/>`_
+       Describes the syntax and semantics of Jinja, useful as
+       reference to those creating Jinja templates.
+
 .. _yum:
 
 yum

@@ -1,1 +1,38 @@
 Github pages documentation for the ansible project
+==================================================
+
+How do I.....
+
+Pull in the git submodule?
+``````````````````````````
+
+  From a fresh checkout:
+
+    $ git submodule init
+
+
+Update the git submodule hash?
+``````````````````````````````
+
+    $ cd ansible
+    $ git pull
+    $ cd ..
+    $ git add ansible
+
+
+Build this crazy thing?
+```````````````````````
+
+  First, you need these installed:
+    * asciidoc
+    * python sphinx
+
+  Then you can:
+
+    $ make
+
+  or,
+
+    $ make viewdocs
+
+  to open the built docs in your web browser.

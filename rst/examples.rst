@@ -42,12 +42,11 @@ To just transfer a file directly to many different servers::
 
     ansible atlanta -m copy -a "/etc/hosts /tmp/hosts"
 
-To use templating, first run the setup module to put the template
+To use templating, first run the :ref:`setup` module to put the template
 variables you would like to use on the remote host. Then use the
 template module to write the files using the templates. Templates are
-written in Jinja2 format. Playbooks (covered elsewhere in the
-documentation) will run the setup module for you, making this even
-simpler.::
+written in Jinja2 format. :doc:`playbooks` will run the ``setup``
+module for you, making this even simpler::
 
     ansible webservers -m setup    -a "favcolor=red ntp_server=192.168.1.1"
     ansible webservers -m template -a "src=/srv/motd.j2 dest=/etc/motd"
