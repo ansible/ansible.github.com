@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -185,7 +184,7 @@ here.  We&#8217;ll use <cite>-m</cite> later to run some other <a class="referen
 execute a module using the shell, we can do those things, and also use pipe and redirection operators.
 Read more about the differences on the <a class="reference internal" href="modules.html"><em>Ansible Modules</em></a> page.  The shell
 module looks like this:</p>
-<div class="highlight-python"><pre>ansible raleigh -m shell -a "echo \\$TERM"</pre>
+<div class="highlight-python"><pre>ansible raleigh -m shell -a 'echo $TERM'</pre>
 </div>
 <p>When running any command with the ansible &#8220;ad hoc&#8221; CLI (as opposed to playbooks), pay particular attention
 to shell quoting rules, so the shell doesn&#8217;t eat a variable before it gets passed to Ansible.</p>
