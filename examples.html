@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -171,7 +170,7 @@ using <cite>/usr/bin/ansible-playbook</cite> &#8211; the concepts port over dire
 <h2>Parallelism and Shell Commands<a class="headerlink" href="#parallelism-and-shell-commands" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s use ansible&#8217;s command line tool to reboot all web servers in Atlanta, 10 at a time.  First, let&#8217;s
 set up SSH-agent so it can remember our credentials:</p>
-<div class="highlight-python"><pre>ssh-agent bash
+<div class="highlight-python"><pre>eval $(ssh-agent)
 ssh-add ~/.ssh/id_rsa.pub</pre>
 </div>
 <p>Now to run the command on all servers in a group, in this case, &#8216;atlanta&#8217;:</p>
