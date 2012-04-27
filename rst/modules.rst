@@ -325,9 +325,10 @@ Controls services on remote machines.
 
 *state*:
 
-* Values are ``started``, ``stopped``, or ``restarted``.
-  Started/stopped are idempotent actions that will not run commands
-  unless necessary.  ``restarted`` will always bounce the service.
+* Values are ``started``, ``stopped``, ``restarted``, or ``status``.
+  Started, stopped, and status are idempotent actions that will not run 
+  commands unless necessary.  ``restarted`` will always bounce the service.
+  ``status`` will query the current status of the service.
 
 *name*:
 
