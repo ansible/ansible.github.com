@@ -236,13 +236,13 @@ to run a playbook inside a OS installer, such as an Anaconda kickstart.
 
 To run an entire playbook locally, just set the "hosts:" line to "hosts:127.0.0.1" and then run the playbook like so::
 
-    hosts: 127.0.0.1
-    connection: local
+    playbook playbook.yml --connection=local
 
 Alternatively, a local connection can be used in a single playbook play, even if other plays in the playbook
 use the default remote connection type::
 
-    playbook playbook.yml --connection=local
+    hosts: 127.0.0.1
+    connection: local
 
 Variables From Other Hosts
 ++++++++++++++++++++++++++
