@@ -336,12 +336,18 @@ Controls services on remote machines.
   Enable this service via ``chkconfig`` (CentOS) or ``update-rc.d``
   (Debian/Ubuntu).
 
+*list*:
+
+* Optional. Only possible value currently is ``status``.
+  Using only this argument in combination with the ``name`` argument will
+  return the current status of the named service.
+
 Example action from Ansible :doc:`playbooks`::
 
     service name=httpd state=started
     service name=httpd state=stopped
     service name=httpd state=restarted
-
+    service name=ssh list=status
 
 .. _setup:
 
