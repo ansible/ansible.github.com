@@ -329,6 +329,12 @@ Controls services on remote machines.
 
 * The name of the service.
 
+*enable*:
+
+* Optional. Values are ``yes`` and ``no``. 
+  Enable this service via ``chkconfig`` (CentOS) or ``update-rc.d``
+  (Debian/Ubuntu).
+
 Example action from Ansible :doc:`playbooks`::
 
     service name=httpd state=started
