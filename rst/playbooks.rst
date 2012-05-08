@@ -402,7 +402,7 @@ An include file simply contains a flat list of tasks, like so::
 
 Include directives look like this::
 
-    tasks:
+   - tasks:
       - include: tasks/foo.yml
 
 Variables passed in can be used in the include files too.  Assume a variable named 'user'. Using
@@ -415,7 +415,7 @@ I can also pass variables into includes directly.  We might call this a 'paramet
 For instance, if deploying multiple wordpress instances, I could
 contain all of my wordpress tasks in a single wordpress.yml file, and use it like so::
 
-    tasks:
+   - tasks:
      - include: wordpress.yml user=timmy 
      - include: wordpress.yml user=alice
      - include: wordpress.yml user=bob
