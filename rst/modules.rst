@@ -44,7 +44,8 @@ Manages apt-packages (such as for Debian/Ubuntu).
 
 *pkg*:
 
-* A package name or package specifier with version, like foo=1.0
+* A package name or package specifier with version, like 'foo' or 'foo=1.0' to
+  install version 1.0 of the 'foo' package.
 
 *state*:
 
@@ -329,12 +330,24 @@ Controls services on remote machines.
 
 * The name of the service.
 
+*enable*:
+
+* Optional. Values are ``yes`` and ``no``. 
+  Enable this service via ``chkconfig`` (CentOS) or ``update-rc.d``
+  (Debian/Ubuntu).
+
+*list*:
+
+* Optional. Only possible value currently is ``status``.
+  Using only this argument in combination with the ``name`` argument will
+  return the current status of the named service.
+
 Example action from Ansible :doc:`playbooks`::
 
     service name=httpd state=started
     service name=httpd state=stopped
     service name=httpd state=restarted
-
+    service name=ssh list=status
 
 .. _setup:
 
