@@ -154,8 +154,9 @@ which is totally ok if the command is something like
 'chmod' or 'setsebool', etc.
 
 Every task must have a name, which is included in the output from
-running the playbook.   This is output for humans, so it is
-nice to have reasonably good descriptions of each task step.
+running the playbook, and a name has only one action.  This is 
+output for humans, so it is nice to have reasonably good descriptions 
+of each task step.
 
 Here is what a basic task looks like, as with most modules,
 the service module takes key=value arguments::
