@@ -26,10 +26,10 @@ Playbooks should be organized like this::
             stop.yml         # playbook to halt the service (optional)
 
             files/           # files to get copied without doing templating
-               httpd.conf
+               etc_httpd_conf_httpd.conf
 
             templates/       # ansible templates which will be modified
-               app-config.conf
+               var_www_app-config.conf
 
             vars/            # per-playbook variables, also can over-ride globals
                main.yml
@@ -74,7 +74,7 @@ The tasks are individually broken out in 'webserver/tasks/setup.yml' and should 
          - restart httpd
 
      - name: ensure httpd conf file is installed
-       action: copy src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf
+       action: copy src=files/etc_httpd_conf_httpd.conf dest=/etc/httpd/conf/httpd.conf
        notify:
          - reload httpd
 
@@ -91,7 +91,7 @@ The tasks are individually broken out in 'webserver/tasks/setup.yml' and should 
          - reload httpd
 
      - name: ensure the web app config file is installed
-       action template src=templates/app-config.conf dest=/var/www/app-config.conf owner=apache group=apache mode=600
+       action template src=templates/var_www_app-config.conf dest=/var/www/app-config.conf owner=apache group=apache mode=600
        notify
          - reload httpd
 
