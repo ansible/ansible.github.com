@@ -48,7 +48,7 @@ The global_varibles.yml file is for varibles which should be shared by every pla
 
     ---
     is_cent6: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('6')"
-    is_cent5: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('6')"
+    is_cent5: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('5')"
     ansible_master: 10.0.0.10
 
 The webserver/setup.yml playbook would be as simple as::
