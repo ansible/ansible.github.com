@@ -17,53 +17,112 @@ Directory Organization
 
 Playbooks should be organized like this::
  
-    (root of source control repository)
+    (root of source control repository -- I keep mine at /etc/ansible/playbooks/)
 
-        acme/           # each playbook has a directory
+        global_varibles.yml  # global variables for all playbooks
+        webserver/           # each playbook has a directory
 
-            setup.yml   # playbook to manage the service
-            stop.yml    # playbook to halt the service (optional)
+            setup.yml        # playbook to manage the service
+            stop.yml         # playbook to halt the service (optional)
 
-            files/
-               some_file_path_foo.conf
+            files/           # files to get copied without doing templating
+               etc_httpd_conf_httpd.conf
 
-            templates/
-               etc_acme_conf_acme.conf
-               etc_other_conf_other.conf
+            templates/       # ansible templates which will be modified
+               var_www_app-config.conf
 
-            vars/
+            vars/            # per-playbook variables, also can over-ride globals
                main.yml
 
-            handlers/
+            handlers/        # handlers defined from any of the tasks below
                main.yml
 
             tasks/
-               setup.yml
-               stop.yml 
+               setup.yml     # the actual tasks to run in the playbook
+               stop.yml      # tasks to undo the setup tasks, called from webserver/stop.yml (optional)
 
 Any directories or files not needed can be omitted.  Not all modules may require `vars` or `files` sections, though most
 will require `handlers`, `tasks`, and `templates`.  To review what each of these sections do, see :doc:`playbooks` and :doc:`playbooks2`.
 
-The acme/setup.yml playbook would be as simple as::
+The global_varibles.yml file is for varibles which should be shared by every playbook should look something like this::
 
-    ----
+    ---
+    is_cent6: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('6')"
+    is_cent5: "'$ansible_distribution' == 'CentOS' and '$ansible_distribution_version'.startswith('5')"
+    ansible_master: 10.0.0.10
 
+The webserver/setup.yml playbook would be as simple as::
+
+    ---
     - hosts: webservers
       user: root
 
       vars_files
+        - ../global_varibles.yml
         - vars/main.yml
       tasks:
         - include: tasks/setup.yml
       handlers:
         - include: handlers/main.yml
 
-The tasks are individually broken out in 'acme/tasks/setup.yml', and handlers, which are common to all task files,
-are contained in 'acme/handlers/main.yml'.  As a reminder, handlers are mostly just used to notify services to restart
-when things change, and these are described in :doc:`playbooks`.
+The tasks are individually broken out in 'webserver/tasks/setup.yml' and should have tasks like these::
 
+     ---
+     - name: ensure httpd package is installed
+       action: yum pkg=httpd state=latest
+       notify:
+         - restart httpd
+
+     - name: ensure httpd conf file is installed
+       action: copy src=files/etc_httpd_conf_httpd.conf dest=/etc/httpd/conf/httpd.conf
+       notify:
+         - reload httpd
+
+     - name: ensure centos5 conf file is installed only on centos5
+       action: copy src=files/centos5.conf dest=/etc/httpd/conf.d/centos5.conf
+       only_if: '$is_centos5'
+       notify:
+         - reload httpd
+
+     - name: ensure centos6 conf file is installed only on centos6
+       action: copy src=files/centos6.conf dest=/etc/httpd/conf.d/centos6.conf
+       only_if: '$is_centos6'
+       notify:
+         - reload httpd
+
+     - name: ensure the web app config file is installed
+       action template src=templates/var_www_app-config.conf dest=/var/www/app-config.conf owner=apache group=apache mode=600
+       notify
+         - reload httpd
+
+     - name: checkout the current version of the web app using git
+       action git repo=git@example.com:my-webapp.git dest=/var/www/html/ branch=master version=HEAD
+
+Handlers, which are common to all task files, should exists in are contained in 'webserver/handlers/main.yml'.
+As a reminder, handlers are mostly just used to notify services to restart when things change, and these are described in :doc:`playbooks`.
+They should contain things like this::
+
+    ---
+    - name: restart httpd
+      action: service name=httpd state=restarted
+
+    - name: reload httpd
+      action: service name=httpd state=resloaded
+
+Notice the difference between the 'reload httpd' and 'restart httpd' handlers.
 Including more than one setup file or more than one handlers file is of course legal.
 
+The varibles which are not defined in the global_varibles.yml file should be defined in the file vars/main.yml and should look something like this::
+
+     ---
+     is_firstserver: "'$ansible_fqdn' == 'foo1.example.com'"
+
+You can also over-ride the varibles from the global file by setting them again in vars/main.yml::
+
+     ---
+     # override the master server
+     ansible_master: 192.168.122.121
+     
 Having playbooks be able to include other playbooks is coming in release 0.5.
 
 Until then, to manage your entire site, simply execute all of your playbooks together, in the order desired.
