@@ -19,27 +19,27 @@ Playbooks should be organized like this::
  
     (root of source control repository -- I keep mine at /etc/ansible/playbooks/)
 
-        global_varibles.yml
+        global_varibles.yml  # global variables for all playbooks
         webserver/           # each playbook has a directory
 
-            setup.yml   # playbook to manage the service
-            stop.yml    # playbook to halt the service (optional)
+            setup.yml        # playbook to manage the service
+            stop.yml         # playbook to halt the service (optional)
 
-            files/
+            files/           # files to get copied without doing templating
                httpd.conf
 
-            templates/
+            templates/       # ansible templates which will be modified
                app-config.conf
 
-            vars/
+            vars/            # per-playbook variables, also can over-ride globals
                main.yml
 
-            handlers/
+            handlers/        # handlers defined from any of the tasks below
                main.yml
 
             tasks/
-               setup.yml
-               stop.yml 
+               setup.yml     # the actual tasks to run in the playbook
+               stop.yml      # tasks to undo the setup tasks, called from webserver/stop.yml (optional)
 
 Any directories or files not needed can be omitted.  Not all modules may require `vars` or `files` sections, though most
 will require `handlers`, `tasks`, and `templates`.  To review what each of these sections do, see :doc:`playbooks` and :doc:`playbooks2`.
