@@ -109,7 +109,7 @@ They should contain things like this::
     - name: reload httpd
       action: service name=httpd state=resloaded
 
-Notice the difference between the 'reload apache' and 'restart apache' handlers.
+Notice the difference between the 'reload httpd' and 'restart httpd' handlers.
 Including more than one setup file or more than one handlers file is of course legal.
 
 The varibles which are not defined in the global_varibles.yml file should be defined in the file vars/main.yml and should look something like this::
