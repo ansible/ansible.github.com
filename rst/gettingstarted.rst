@@ -105,7 +105,7 @@ same version.  This is perfectly safe to do.
 Ubuntu 10.04 and 12.04 
 ++++++++++++++++++++++
 
-If you are running from checkout you need:
+If you are running from checkout you need::
  
   # install Ansible dependencies: 
   $ sudo apt-get -y install python-jinja2 python-paramiko python-yaml 
@@ -134,7 +134,7 @@ Using virtualenv for Ansible:
 
 Virtualenv is a tool to build isolated Python environments.
 
-In Ubuntu: 
+In Ubuntu:: 
 
   $ sudo apt-get install build-essential python-dev python-virtualenv 
   $ virtualenv ~/ve
