@@ -102,6 +102,15 @@ bumped with every source code change.  To get around this, you can use
 ``rpm -Uvh`` with ``--force`` when RPM tells you the package is still at the
 same version.  This is perfectly safe to do.
 
+Ubuntu 10.04 and 12.04 
+++++++++++++++++++++++
+
+If you are running from checkout you need::
+ 
+  # install Ansible dependencies: 
+  $ sudo apt-get -y install python-jinja2 python-paramiko python-yaml 
+
+
 Debian, Gentoo, Arch, Others
 ++++++++++++++++++++++++++++
 
@@ -116,8 +125,23 @@ If you have python3 installed on Arch, you probably want to symlink python to py
 
     sudo ln -sf /usr/bin/python2 /usr/bin/python
 
+  
 If you would like to package Ansible for Homebrew, BSD, or others,
 please stop by the mailing list and say hi!
+
+Using virtualenv for Ansible: 
++++++++++++++++++++++++++++++
+
+Virtualenv is a tool to build isolated Python environments.
+
+In Ubuntu:: 
+
+  $ sudo apt-get install build-essential python-dev python-virtualenv 
+  $ virtualenv ~/ve
+  $ source ~/ve/bin/activate 
+  $ pip install paramiko jinja2 PyYAML
+
+Then you can install Ansible from checkout.
 
 
 Tagged Releases
