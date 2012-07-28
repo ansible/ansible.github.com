@@ -269,7 +269,39 @@ Example action from Ansible :doc:`playbooks`::
     file path=/some/path state=directory setype=httpd_sys_content_t
     file path=/some/path state=directory context=default
 
-.. _git:
+get
+```
+
+The get module fetches content from a remote URL and stores that in a file. 
+In addition to the options listed below, the arguments available to the `file`
+module can also be passed to the copy module.
+
+*url*:
+
+* URL to the remote resource, which can be http://, https://, or ftp://, as supported
+  by the implementation of urllib2.
+
+
+*dest*:
+
+* Remote absolute path where the content of the URL should end up. If this is a 
+  directory, get attempts to determine the name of the URL resource and creates
+  a file in dest with that name. If this is a filename, get uses its modification
+  timestamp to construct an If-Modified-Since header which is sent to the HTTP server
+  specified in the URL. If the server responds with 304 (Not Modified), no transfer
+  is performed, and the dest path remains unchanged. In all other cases, content
+  is transfered into a temporary file and if the checksums of this temporary file
+  and dest differ, dest is ovewritten.
+
+
+Apart from information on the transfer, this module also returns md5sum
+information about the resultant file.
+
+Example action from Ansible :doc:`playbooks`::
+
+    url url=http://http://ansible.github.com/ dest=/tmp/index.html owner=foo group=foo mode=0444
+
+.. _get:
 
 git
 ```
