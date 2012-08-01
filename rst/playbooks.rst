@@ -224,6 +224,8 @@ Now in a very basic playbook all the tasks will be listed directly in
 that play, though it will usually make more sense to break up tasks
 using the ``include`` directive.  We'll show that a bit later.
 
+.. _handlers:
+
 Running Operations On Change
 ````````````````````````````
 
