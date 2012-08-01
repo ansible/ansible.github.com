@@ -1,10 +1,11 @@
 Advanced Playbooks
 ==================
 
-Here are some advanced features of the playbooks language.  Using all of these features
-are not neccessary, but many of them will prove useful.  If a feature doesn't seem immediately
-relevant, feel free to skip it.  For many people, the features documented in `playbooks` will
-be 90% or more of what they use in Ansible.
+Here are some advanced features of the playbooks language.  Using all
+of these features are not neccessary, but many of them will prove
+useful.  If a feature doesn't seem immediately relevant, feel free to
+skip it.  For many people, the features documented in :doc:`playbooks`
+will be 90% or more of what they use in Ansible.
 
 Tags
 ++++
@@ -12,8 +13,8 @@ Tags
 .. versionadded:: 0.6
 
 If you have a large playbook it may become useful to be able to run a
-specific part of the configuration.  Both plays and tasks support a
-"tags:" attribute for this reason.
+specific part of the configuration. Both plays and tasks support a
+``tags`` attribute for this reason.
 
 Example::
 
@@ -30,7 +31,8 @@ Example::
           tags:
              - configuration
 
-If you wanted to just run the "configuration" and "packages" part of a very long playbook, you could do this::
+If you wanted to just run the ``configuration`` and ``packages`` part
+of a very long playbook, you could do this::
 
     ansible-playbook example.yml --tags "configuration,packages"
 
@@ -49,14 +51,16 @@ all of your systems like this::
     - include: playbooks/webservers.yml
     - include: playbooks/dbservers.yml
 
-This concept works great with tags to rapidly select exactly what plays you want to run, and exactly
-what parts of those plays.
+This concept works great with tags to rapidly select exactly what
+plays you want to run, and exactly what parts of those plays.
 
 Accessing Complex Variable Data
 +++++++++++++++++++++++++++++++
 
-Some provided facts, like networking information, are made available as nested data structures.  To access
-them a simple '$foo' is not sufficient, but it is still easy to do.   Here's how we get an IP address::
+Some provided facts, like networking information, are made available
+as nested data structures.  To access them a simple ``$foo`` is not
+sufficient, but it is still easy to do.  Here's how we get an IP
+address::
 
     ${ansible_eth0.ipv4.address}
 
@@ -66,16 +70,17 @@ It is also possible to access variables whose elements are arrays::
 
 And the array and hash reference syntaxes can be mixed.
 
-In templates, the simple access form still holds, but they can also be accessed from Jinja2 in more Python-native ways if
-that is preferred::
+In templates, the simple access form still holds, but they can also be
+accessed from Jinja2 in more Python-native ways if that is preferred::
 
     {{ ansible_eth0["ipv4"]["address"] }}
 
 Accessing Information About Other Hosts
 +++++++++++++++++++++++++++++++++++++++
 
-If your database server wants to check the value of a 'fact' from another node, or an inventory variable
-assigned to another node, it's easy to do so within a template or even an action line::
+If your database server wants to check the value of a *fact* from
+another node, or an inventory variable assigned to another node, it's
+easy to do so within a template or even an action line::
 
     ${hostvars.hostname.factname}
 
@@ -84,25 +89,31 @@ assigned to another node, it's easy to do so within a template or even an action
    between hosts.  The hosts that you want to reference data from must
    be included in either the current play or any previous play.
 
-Additionally, *group_names* is a list (array) of all the groups the current host is in.  This can be used in templates using Jinja2 syntax to make template source files that vary based on the group membership (or role) of the host::
+Additionally, ``group_names`` is a list (array) of all the groups the
+current host is in.  This can be used in templates using Jinja2 syntax
+to make template source files that vary based on the group membership
+(or role) of the host::
 
    {% if 'webserver' in group_names %}
       # some part of a configuration file that only applies to webservers
    {% endif %}
 
-*groups* is a list of all the groups (and hosts) in the inventory.  This can be used to enumerate all hosts within a group. 
-For example::
+``groups`` is a list of all the groups (and hosts) in the inventory.
+This can be used to enumerate all hosts within a group.  For example::
 
    {% for host in groups['app_servers'] %}
       # something that applies to all app servers.
    {% endfor %}
 
-Use cases include pointing a frontend proxy server to all of the app servers, setting up the correct firewall rules between servers, etc.
+Use cases include pointing a frontend proxy server to all of the app
+servers, setting up the correct firewall rules between servers, etc.
 
-*inventory_hostname* is the name of the hostname as configured in Ansible's inventory host file.  This can
-be useful for when you don't want to rely on the discovered hostname `ansible_hostname` or for other mysterious
-reasons.  If you have a long FQDN, *inventory_hostname_short* (in Ansible 0.6) also contains the part up to the first
-period.   
+``inventory_hostname`` is the name of the hostname as configured in
+Ansible's inventory host file.  This can be useful for when you don't
+want to rely on the discovered hostname ``ansible_hostname`` or for
+other mysterious reasons.  If you have a long FQDN,
+``inventory_hostname_short`` (in Ansible 0.6) also contains the part
+up to the first period.
 
 Don't worry about any of this unless you think you need it.  You'll know when you do.
 
@@ -146,7 +157,7 @@ Prompting For Sensitive Data
 ++++++++++++++++++++++++++++
 
 You may wish to prompt the user for certain input, and can
-do so with the similarly named 'vars_prompt' section.  This has uses
+do so with the similarly named ``vars_prompt`` section.  This has uses
 beyond security, for instance, you may use the same playbook for all
 software releases and would prompt for a particular release version
 in a push-script::
@@ -161,10 +172,14 @@ in a push-script::
         quest: "what is your quest?"
         favcolor: "what is your favorite color?"
 
-There are full examples of both of these items in the github examples/playbooks directory.
+There are full examples of both of these items in the github
+`examples/playbooks
+<https://github.com/ansible/ansible/tree/devel/examples/playbooks>`_
+directory.
 
-An alternative form of vars_prompt allows for hiding input from the user, and may later support
-some other options, but otherwise works equivalently::
+An alternative form of ``vars_prompt`` allows for hiding input from the
+user, and may later support some other options, but otherwise works
+equivalently::
 
    vars_prompt:
      - name: "some_password"
@@ -178,7 +193,7 @@ some other options, but otherwise works equivalently::
 Passing Variables On The Command Line
 +++++++++++++++++++++++++++++++++++++
 
-In addition to `vars_prompt` and `vars_files`, it is possible to send variables over
+In addition to ``vars_prompt`` and ``vars_files``, it is possible to send variables over
 the ansible command line.  This is particularly useful when writing a generic release playbook
 where you may want to pass in the version of the application to deploy::
 
@@ -205,7 +220,7 @@ package if the operating system is a particular version, or it could
 be something like performing some cleanup steps if a filesystem is
 getting full.
 
-This is easy to do in Ansible, with the `only_if` clause, which
+This is easy to do in Ansible, with the ``only_if`` clause, which
 actually is a Python expression.  Don't panic -- it's actually pretty
 simple::
 
@@ -219,20 +234,22 @@ simple::
         action: command /sbin/shutdown -t now
         only_if: '$is_favcolor_blue'
       
-Variables from tools like `facter` and `ohai` can be used here, if
+Variables from tools like ``facter`` and ``ohai`` can be used here, if
 installed, or you can use variables that bubble up from ansible, which
 many are provided by the :ref:`setup` module.  As a reminder, these
-variables are prefixed, so it's `$facter_operatingsystem`, not
-`$operatingsystem`.  Ansible's built in variables are prefixed with
-`ansible_`.
+variables are prefixed, so it's ``$facter_operatingsystem``, not
+``$operatingsystem``.  Ansible's built in variables are prefixed with
+``ansible_``.
 
-The only_if expression is actually a tiny small bit of Python, so be
-sure to quote variables and make something that evaluates to `True` or
-`False`.  It is a good idea to use 'vars_files' instead of 'vars' to
+The ``only_if`` expression is actually a tiny small bit of Python, so be
+sure to quote variables and make something that evaluates to ``True`` or
+``False``.  It is a good idea to use ``vars_files`` instead of ``vars`` to
 define all of your conditional expressions in a way that makes them
 very easy to reuse between plays and playbooks.
 
-You cannot use live checks here, like 'os.path.exists', so don't try.  
+You cannot use live checks here, like `os.path.exists
+<http://docs.python.org/library/os.path.html#os.path.exists>`_, so
+don't try.
 
 It's also easy to provide your own facts if you want, which is covered
 in :doc:`moduledev`.  To run them, just make a call to your own custom
@@ -265,8 +282,9 @@ in an Ansible Playbook::
       - name: make sure apache is running
         action: service name=$apache state=running
 
-Note that a variable (`$facter_operatingsystem`) is being interpolated into the list of
-filenames being defined for vars_files.
+Note that a variable (``$facter_operatingsystem``) is being
+interpolated into the list of filenames being defined for
+``vars_files``.
 
 As a reminder, the various YAML files contain just keys and values::
 
@@ -275,13 +293,13 @@ As a reminder, the various YAML files contain just keys and values::
     apache: httpd
     somethingelse: 42
 
-How does this work?  If the operating system was 'CentOS', the first
-file Ansible would try to import would be 'vars/CentOS.yml', followed
-up by '/vars/os_defaults.yml' if that file did not exist.  If no files
-in the list were found, an error would be raised.  On Debian, it would
-instead first look towards 'vars/Debian.yml' instead of
-'vars/CentOS.yml', before falling back on
-'vars/os_defaults.yml'. Pretty simple.
+How does this work?  If the operating system was *CentOS*, the first
+file Ansible would try to import would be ``vars/CentOS.yml``,
+followed up by ``vars/os_defaults.yml`` if that file did not exist.
+If no files in the list were found, an error would be raised.  On
+*Debian*, it would instead first look towards ``vars/Debian.yml``
+instead of ``vars/CentOS.yml``, before falling back on
+``vars/os_defaults.yml``. Pretty simple.
 
 To use this conditional import feature, you'll need facter or ohai
 installed prior to running the playbook, but you can of course push
@@ -294,9 +312,10 @@ this out with Ansible if you like::
     # for ohai
     ansible -m yum -a "pkg=ohai ensure=installed"
 
-Ansible's approach to configuration -- seperating variables from tasks, keeps your playbooks
-from turning into arbitrary code with ugly nested ifs, conditionals, and so on - and results
-in more streamlined & auditable configuration rules -- especially because there are a 
+Ansible's approach to configuration -- separating variables from
+tasks, keeps your playbooks from turning into arbitrary code with ugly
+nested ifs, conditionals, and so on - and results in more streamlined
+& auditable configuration rules -- especially because there are a
 minimum of decision points to track.
 
 Loop Shorthand
@@ -310,7 +329,7 @@ To save some typing, repeated tasks can be written in short-hand like so::
          - testuser1
          - testuser2
 
-If you have defined a YAML list in a variables file, or the 'vars' section, you can also do::
+If you have defined a YAML list in a variables file, or the ``vars`` section, you can also do::
 
     with_items: $somelist
 
@@ -321,8 +340,8 @@ The above would be the equivalent of::
     - name: add user testuser2
       action: user name=testuser2 state=present groups=wheel
 
-In a future release, the yum and apt modules will use with_items to execute fewer package
-manager transactions.
+In a future release, the yum and apt modules will use ``with_items``
+to execute fewer package manager transactions.
 
 
 Selecting Files And Templates Based On Variables
@@ -333,7 +352,7 @@ The following construct selects the first available file appropriate for the var
 which is often much cleaner than putting a lot of if conditionals in a template.
 
 The following example shows how to template out a configuration file that was very different between, say,
-CentOS and Debian::
+*CentOS* and *Debian*::
 
     - name: template a file
       action: template src=$item dest=/etc/myapp/foo.conf
@@ -356,7 +375,7 @@ operations that might be subject to timeout.
 
 To launch a task asynchronously, specify its maximum runtime
 and how frequently you would like to poll for status.  The default
-poll value is 10 seconds if you do not specify a value for `poll`::
+poll value is 10 seconds if you do not specify a value for ``poll``::
 
     ---
     - hosts: all
@@ -369,7 +388,7 @@ poll value is 10 seconds if you do not specify a value for `poll`::
 
 .. note::
    There is no default for the async time limit.  If you leave off the
-   'async' keyword, the task runs synchronously, which is Ansible's
+   ``async`` keyword, the task runs synchronously, which is Ansible's
    default.
 
 Alternatively, if you do not need to wait on the task to complete, you may
@@ -400,12 +419,14 @@ It may be useful to use a playbook locally, rather than by connecting over SSH. 
 for assuring the configuration of a system by putting a playbook on a crontab.  This may also be used
 to run a playbook inside a OS installer, such as an Anaconda kickstart.
 
-To run an entire playbook locally, just set the "hosts:" line to "hosts:127.0.0.1" and then run the playbook like so::
+To run an entire playbook locally, just set the ``hosts`` line to
+``hosts: 127.0.0.1`` and then run the playbook like so::
 
     ansible-playbook playbook.yml --connection=local
 
-Alternatively, a local connection can be used in a single playbook play, even if other plays in the playbook
-use the default remote connection type::
+Alternatively, a ``local`` connection can be used in a single playbook
+play, even if other plays in the playbook use the default remote
+connection type::
 
     hosts: 127.0.0.1
     connection: local
@@ -423,7 +444,7 @@ systems, mainly, or if you are using Ansible on experimental platforms.   In any
 Pull-Mode Playbooks
 +++++++++++++++++++
 
-The use of playbooks in local mode (above) is made extremely powerful with the addition of `ansible-pull`.
+The use of playbooks in local mode (above) is made extremely powerful with the addition of ``ansible-pull``.
 A script for setting up ansible-pull is provided in the examples/playbooks directory of the source
 checkout.
 
@@ -432,15 +453,19 @@ cron and update playbook source via git.  This interverts the default push archi
 architecture, which has near-limitless scaling potential.  The setup playbook can be tuned to change
 the cron frequency, logging locations, and parameters to ansible-pull.
 
-This is useful both for extreme scale-out as well as periodic remediation.  Usage of the 'fetch' module to retrieve
-logs from ansible-pull runs would be an excellent way to gather and analyze remote logs from ansible-pull.
+This is useful both for extreme scale-out as well as periodic
+remediation.  Usage of the :ref:`fetch` module to retrieve logs from
+ansible-pull runs would be an excellent way to gather and analyze
+remote logs from ansible-pull.
 
 Style Points
 ++++++++++++
 
-Ansible playbooks are colorized.  If you do not like this, set the ANSIBLE_NOCOLOR=1 environment variable.
+Ansible playbooks are colorized.  If you do not like this, set the
+``ANSIBLE_NOCOLOR=1`` environment variable.
 
-Ansible playbooks also look more impressive with cowsay installed, and we encourage installing this package.
+Ansible playbooks also look more impressive with *cowsay* installed,
+and we encourage installing this package.
 
 .. seealso::
 
