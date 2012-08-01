@@ -92,14 +92,18 @@ easy to do so within a template or even an action line::
 Additionally, ``group_names`` is a list (array) of all the groups the
 current host is in.  This can be used in templates using Jinja2 syntax
 to make template source files that vary based on the group membership
-(or role) of the host::
+(or role) of the host:
+
+.. code-block:: django
 
    {% if 'webserver' in group_names %}
       # some part of a configuration file that only applies to webservers
    {% endif %}
 
 ``groups`` is a list of all the groups (and hosts) in the inventory.
-This can be used to enumerate all hosts within a group.  For example::
+This can be used to enumerate all hosts within a group.  For example:
+
+.. code-block:: django
 
    {% for host in groups['app_servers'] %}
       # something that applies to all app servers.
