@@ -1,3 +1,5 @@
+.. highlight:: yaml
+
 YAML Syntax
 ===========
 
@@ -16,8 +18,8 @@ YAML Basics
 -----------
 
 For Ansible, nearly every YAML file starts with a list.  Each item in
-the list is a list of key/value pairs, commonly called a "hash" or a
-"dictionary".  So, we need to know how to write lists and dictionaries
+the list is a list of key/value pairs, commonly called a *hash* or a
+*dictionary*.  So, we need to know how to write lists and dictionaries
 in YAML.
 
 There's another small quirk to YAML.  All YAML files (regardless of
