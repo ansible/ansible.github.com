@@ -7,10 +7,13 @@ relevant, feel free to skip it.  For many people, the features documented in `pl
 be 90% or more of what they use in Ansible.
 
 Tags
-````
+++++
 
-(New in 0.6) If you have a large playbook it may become useful to be able to run a specific
-part of the configuration.  Both plays and tasks support a "tags:" attribute for this reason.
+.. versionadded:: 0.6
+
+If you have a large playbook it may become useful to be able to run a
+specific part of the configuration.  Both plays and tasks support a
+"tags:" attribute for this reason.
 
 Example::
 
@@ -32,12 +35,15 @@ If you wanted to just run the "configuration" and "packages" part of a very long
     ansible-playbook example.yml --tags "configuration,packages"
 
 Playbooks Including Playbooks
-`````````````````````````````
++++++++++++++++++++++++++++++
 
-(New in 0.6) To further advance the concept of include files, playbook files can include other playbook
-files.  Suppose you define the behavior of all your webservers in "webservers.yml" and
-all your database servers in "dbservers.yml".  You can create a "site.yml" that would
-reconfigure all of your systems like this::
+.. versionadded:: 0.6
+
+To further advance the concept of include files, playbook files can
+include other playbook files.  Suppose you define the behavior of all
+your webservers in "webservers.yml" and all your database servers in
+"dbservers.yml".  You can create a "site.yml" that would reconfigure
+all of your systems like this::
 
     ----
     - include: playbooks/webservers.yml
@@ -73,8 +79,10 @@ assigned to another node, it's easy to do so within a template or even an action
 
     ${hostvars.hostname.factname}
 
-NOTE: No database or other complex system is required to exchange data between hosts.  The hosts that you
-want to reference data from must be included in either the current play or any previous play.
+.. note::
+   No database or other complex system is required to exchange data
+   between hosts.  The hosts that you want to reference data from must
+   be included in either the current play or any previous play.
 
 Additionally, *group_names* is a list (array) of all the groups the current host is in.  This can be used in templates using Jinja2 syntax to make template source files that vary based on the group membership (or role) of the host::
 
@@ -130,7 +138,9 @@ The contents of each variables file is a simple YAML dictionary, like this::
     somevar: somevalue
     password: magic
 
-NOTE: It's also possible to keep per-host and per-group variables in very similar files, this is covered in :ref:`patterns`.
+.. note::
+   It's also possible to keep per-host and per-group variables in very
+   similar files, this is covered in :ref:`patterns`.
 
 Prompting For Sensitive Data
 ++++++++++++++++++++++++++++
@@ -189,12 +199,15 @@ Example::
 Conditional Execution
 +++++++++++++++++++++
 
-Sometimes you will want to skip a particular step on a particular host.  This could be something
-as simple as not installing a certain package if the operating system is a particular version,
-or it could be something like performing some cleanup steps if a filesystem is getting full.
+Sometimes you will want to skip a particular step on a particular
+host.  This could be something as simple as not installing a certain
+package if the operating system is a particular version, or it could
+be something like performing some cleanup steps if a filesystem is
+getting full.
 
-This is easy to do in Ansible, with the `only_if` clause, which actually is a Python expression.
-Don't panic -- it's actually pretty simple::
+This is easy to do in Ansible, with the `only_if` clause, which
+actually is a Python expression.  Don't panic -- it's actually pretty
+simple::
 
     vars:
       favcolor: blue
@@ -206,21 +219,25 @@ Don't panic -- it's actually pretty simple::
         action: command /sbin/shutdown -t now
         only_if: '$is_favcolor_blue'
       
-Variables from tools like `facter` and `ohai` can be used here, if installed, or you can
-use variables that bubble up from ansible, which many are provided by the :ref:`setup` module.   As a reminder,
-these variables are prefixed, so it's `$facter_operatingsystem`, not `$operatingsystem`.  Ansible's
-built in variables are prefixed with `ansible_`. 
+Variables from tools like `facter` and `ohai` can be used here, if
+installed, or you can use variables that bubble up from ansible, which
+many are provided by the :ref:`setup` module.  As a reminder, these
+variables are prefixed, so it's `$facter_operatingsystem`, not
+`$operatingsystem`.  Ansible's built in variables are prefixed with
+`ansible_`.
 
-The only_if expression is actually a tiny small bit of Python, so be sure to quote variables and make something
-that evaluates to `True` or `False`.  It is a good idea to use 'vars_files' instead of 'vars' to define
-all of your conditional expressions in a way that makes them very easy to reuse between plays
-and playbooks.
+The only_if expression is actually a tiny small bit of Python, so be
+sure to quote variables and make something that evaluates to `True` or
+`False`.  It is a good idea to use 'vars_files' instead of 'vars' to
+define all of your conditional expressions in a way that makes them
+very easy to reuse between plays and playbooks.
 
 You cannot use live checks here, like 'os.path.exists', so don't try.  
 
-It's also easy to provide your own facts if you want, which is covered in :doc:`moduledev`.  To run them, just
-make a call to your own custom fact gathering module at the top of your list of tasks, and variables returned
-there will be accessible to future tasks::
+It's also easy to provide your own facts if you want, which is covered
+in :doc:`moduledev`.  To run them, just make a call to your own custom
+fact gathering module at the top of your list of tasks, and variables
+returned there will be accessible to future tasks::
 
     tasks:
         - name: gather site specific fact data
@@ -230,11 +247,13 @@ there will be accessible to future tasks::
 Conditional Imports
 +++++++++++++++++++
 
-Sometimes you will want to do certain things differently in a playbook based on certain criteria.
-Having one playbook that works on multiple platforms and OS versions is a good example.
+Sometimes you will want to do certain things differently in a playbook
+based on certain criteria.  Having one playbook that works on multiple
+platforms and OS versions is a good example.
 
-As an example, the name of the Apache package may be different between CentOS and Debian, 
-but it is easily handled with a minimum of syntax in an Ansible Playbook::
+As an example, the name of the Apache package may be different between
+CentOS and Debian, but it is easily handled with a minimum of syntax
+in an Ansible Playbook::
 
     ---
     - hosts: all
@@ -256,14 +275,17 @@ As a reminder, the various YAML files contain just keys and values::
     apache: httpd
     somethingelse: 42
 
-How does this work?  If the operating system was 'CentOS', the first file Ansible would try to import
-would be 'vars/CentOS.yml', followed up by '/vars/os_defaults.yml' if that file
-did not exist.   If no files in the list were found, an error would be raised.
-On Debian, it would instead first look towards 'vars/Debian.yml' instead of 'vars/CentOS.yml', before
-falling back on 'vars/os_defaults.yml'. Pretty simple.
+How does this work?  If the operating system was 'CentOS', the first
+file Ansible would try to import would be 'vars/CentOS.yml', followed
+up by '/vars/os_defaults.yml' if that file did not exist.  If no files
+in the list were found, an error would be raised.  On Debian, it would
+instead first look towards 'vars/Debian.yml' instead of
+'vars/CentOS.yml', before falling back on
+'vars/os_defaults.yml'. Pretty simple.
 
-To use this conditional import feature, you'll need facter or ohai installed prior to running the playbook, but
-you can of course push this out with Ansible if you like::
+To use this conditional import feature, you'll need facter or ohai
+installed prior to running the playbook, but you can of course push
+this out with Ansible if you like::
 
     # for facter
     ansible -m yum -a "pkg=facter ensure=installed"
