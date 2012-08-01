@@ -2,7 +2,7 @@ Command Line
 ============
 
 The following examples show how to use `/usr/bin/ansible` for running ad-hoc tasks.
-Start here. 
+Start here.
 
 For configuration management and deployments, you'll want to pick up on
 using `/usr/bin/ansible-playbook` -- the concepts port over directly.
@@ -29,7 +29,7 @@ If you want to run commands as a different user than root, it looks like this::
     ansible atlanta -a "/usr/bin/foo" -u yourname
 
 If you want to run commands through sudo::
-    
+
     ansible atlanta -a "/usr/bin/foo" -u yourname --sudo [--ask-sudo-pass]
 
 Use --ask-sudo-pass (-K) if you are not using passwordless sudo.  This will interactively prompt
@@ -43,10 +43,10 @@ It is also possible to sudo to a user other than root using --sudo-user (-U)::
 Ok, so those are basics.  If you didn't read about patterns and groups yet, go back and read :doc:`patterns`.
 
 The -f 10 in the above specifies the usage of 10 simultaneous processes.  Normally commands also take
-a `-m` for module name, but the default module name is 'command', so we didn't need to specify that
-all of the time.  We'll use `-m` in later examples to run some other :doc:`modules`.
+a ``-m`` for module name, but the default module name is 'command', so we didn't need to specify that
+all of the time.  We'll use ``-m`` in later examples to run some other :doc:`modules`.
 
-Note that the command module requires absolute paths and does not support shell variables.  If we want to 
+Note that the command module requires absolute paths and does not support shell variables.  If we want to
 execute a module using the shell, we can do those things, and also use pipe and redirection operators.
 Read more about the differences on the :doc:`modules` page.  The shell
 module looks like this::
@@ -57,9 +57,9 @@ When running any command with the ansible "ad hoc" CLI (as opposed to playbooks)
 to shell quoting rules, so the shell doesn't eat a variable before it gets passed to Ansible.  For example,
 using double vs single quotes in the above example would evaluate the variable on the box you were on.
 
-So far we've been demoing simple command execution, but most ansible modules usually do not work like 
-simple scripts. They make the remote system look like you state, and run the commands necessary to 
-get it there.  This is commonly referred to as 'idempotence', and is a core design goal of ansible.  
+So far we've been demoing simple command execution, but most ansible modules usually do not work like
+simple scripts. They make the remote system look like you state, and run the commands necessary to
+get it there.  This is commonly referred to as 'idempotence', and is a core design goal of ansible.
 However, we also recognize that running ad-hoc commands is equally important, so Ansible easily supports both.
 
 
@@ -77,7 +77,7 @@ To transfer a file directly to many different servers::
 
 To use templating, first run the setup module to put the template
 variables you would like to use on the remote host. Then use the
-template module to write the files using those templates. 
+template module to write the files using those templates.
 
 Templates are written in `Jinja2 <http://jinja.pocoo.org/docs/>`_ format.
 Playbooks (covered elsewhere in the
@@ -90,7 +90,7 @@ simpler::
 
 Ansible variables are used in templates by using the name surrounded by double
 curly-braces.  Ansible provides some 'facts' about the system being managed
-automatically in playbooks or when the setup module is run manually.  If facter or ohai 
+automatically in playbooks or when the setup module is run manually.  If facter or ohai
 were installed on the remote machine, variables
 from those programs can be accessed too, using the appropriate prefix::
 
@@ -103,18 +103,18 @@ Using the Ansible facts is generally preferred as that way you can avoid a depen
 on ruby.  If you want to use facter instead, you will also need rubygem-json because
 the facter packages may forget this as a dependency.
 
-The `file` module allows changing ownership and permissions on files.  These
-same options can be passed directly to the `copy` or `template` modules as well::
+The ``file`` module allows changing ownership and permissions on files.  These
+same options can be passed directly to the ``copy`` or ``template`` modules as well::
 
     ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
     ansible webservers -m file -a "dest=/srv/foo/b.txt mode=600 owner=mdehaan group=mdehaan"
 
-The `file` module can also create directories, similar to `mkdir -p`::
-    
+The ``file`` module can also create directories, similar to `mkdir -p`::
+
     ansible webservers -m file -a "dest=/path/to/c mode=644 owner=mdehaan group=mdehaan state=directory"
 
 As well as delete directories (recursively) and delete files::
-    
+
     ansible webservers -m file -a "dest=/path/to/c state=absent"
 
 The mode, owner, and group arguments can also be used on the copy or template lines.
@@ -126,7 +126,7 @@ Managing Packages
 There are modules available for yum and apt.  Here are some examples with yum.
 
 Ensure a package is installed, but don't update it::
-    
+
     ansible webservers -m yum -a "pkg=acme state=installed"
 
 Ensure a package is installed to a specific version::
@@ -135,10 +135,10 @@ Ensure a package is installed to a specific version::
 
 Ensure a package is at the latest version::
 
-    ansible webservers -m yum -a "pkg=acme state=latest" 
+    ansible webservers -m yum -a "pkg=acme state=latest"
 
 Ensure a package is not installed::
- 
+
     ansible webservers -m yum -a "pkg=acme state=removed"
 
 Currently Ansible only has modules for managing packages with yum and apt.  You can install
@@ -200,18 +200,18 @@ If you do decide you want to check on the job status later, you can::
     ansible all -m async_status -a "jid=123456789"
 
 Polling is built-in and looks like this::
-    
+
     ansible all -B 3600 -P 60 -a "/usr/bin/long_running_operation --do-stuff"
 
 The above example says "run for 60 minutes max (60*60=3600), poll for status every 60 seconds".
 
 Poll mode is smart so all jobs will be started before polling will begin on any machine.
-Be sure to use a high enough `--forks` value if you want to get all of your jobs started
+Be sure to use a high enough ``--forks`` value if you want to get all of your jobs started
 very quickly. After the time limit (in seconds) runs out (``-B``), the process on
 the remote nodes will be terminated.
 
-Any module other than `copy` or `template` can be
-backgrounded.  Typically you'll be backgrounding long-running 
+Any module other than ``copy`` or ``template`` can be
+backgrounded.  Typically you'll be backgrounding long-running
 shell commands or software upgrades only.  :doc:`playbooks` also support polling, and have
 a simplified syntax for this.
 
@@ -221,11 +221,7 @@ a simplified syntax for this.
        A list of available modules
    :doc:`playbooks`
        Using ansible for configuration management & deployment
-   `Mailing List <http://groups.google.com/group/ansible-project>`_ 
+   `Mailing List <http://groups.google.com/group/ansible-project>`_
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-
-
-
-

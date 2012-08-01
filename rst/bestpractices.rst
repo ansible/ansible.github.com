@@ -23,7 +23,7 @@ Directory Organization
 ++++++++++++++++++++++
 
 Playbooks should be organized like this::
- 
+
     (root of source control repository)
 
         global_vars.yml # variables for all playbooks
@@ -47,10 +47,10 @@ Playbooks should be organized like this::
 
             tasks/
                setup.yml
-               stop.yml 
+               stop.yml
 
-Any directories or files not needed can be omitted.  Not all modules may require `vars` or `files` sections, though most
-will require `handlers`, `tasks`, and `templates`.  To review what each of these sections do, see :doc:`playbooks` and :doc:`playbooks2`.
+Any directories or files not needed can be omitted.  Not all modules may require ``vars`` or ``files`` sections, though most
+will require ``handlers``, ``tasks``, and ``templates``.  To review what each of these sections do, see :doc:`playbooks` and :doc:`playbooks2`.
 
 The acme/setup.yml playbook would be as simple as::
 
@@ -100,7 +100,7 @@ a descriptive comment about why something is being done instead.
 Use version control.  Keep your playbooks and inventory file in git (or another version control system), and commit when you make changes to them.
 This way you have an audit trail describing when and why you changed the rules automating your infrastructure.
 
-Resist the urge to write the same playbooks and configuration files for heterogeneous distributions.  While lots of software packages claim to make this easy on you, the configuration files are often quite different, to the point where it would be easier to treat them as different playbooks.  This is why, for example, Ansible has a seperate 'yum' and 'apt' module.  Yum and apt have different capabilities, and we don't want to code for the least common denominator.
+Resist the urge to write the same playbooks and configuration files for heterogeneous distributions.  While lots of software packages claim to make this easy on you, the configuration files are often quite different, to the point where it would be easier to treat them as different playbooks.  This is why, for example, Ansible has a separate 'yum' and 'apt' module.  Yum and apt have different capabilities, and we don't want to code for the least common denominator.
 
 Use variables for user tunable settings versus having constants in the tasks file or templates, so that it is easy to reconfigure a playbook.  Think about this as exposing the knobs to things you would like to tweak.
 
@@ -122,5 +122,3 @@ Since a system can be in more than one group, if you have multiple datacenters o
        Complete playbook files from the github project source
    `Mailing List <http://groups.google.com/group/ansible-project>`_
        Questions? Help? Ideas?  Stop by the list on Google Groups
-
-

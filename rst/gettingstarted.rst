@@ -19,7 +19,7 @@ In additon to Python 2.6, you will want the following packages:
 On the managed nodes, you only need Python 2.4 or later, but if you are are running less than Python 2.6 on them, you will
 also need:
 
-* ``python-simplejson`` 
+* ``python-simplejson``
 
 (Note that even that's not quite true.  Ansible's "raw" module (for executing commands in a quick and dirty way) and the copy module -- some of the most basic features in ansible don't even need that.  So technically, you can use Ansible to install python-simplejson using the raw module, which then allows you to use everything else.  That's jumping ahead though.)
 
@@ -36,12 +36,12 @@ Getting Ansible
 
 If you are interested in using all the latest features, you may wish to keep up to date
 with the development branch of the git checkout.  This also makes it easiest to contribute
-back to the project.  
+back to the project.
 
 Instructions for installing from source are below.
 
 Ansible's release cycles are about one month long.  Due to this
-short release cycle, any bugs will generally be fixed in the next release versus maintaining 
+short release cycle, any bugs will generally be fixed in the next release versus maintaining
 backports on the stable branch.
 
 You may also wish to follow the `Github project <https://github.com/ansible/ansible>`_ if
@@ -72,8 +72,8 @@ Now let's test things::
 Make Install
 ++++++++++++
 
-If you are not working from a distribution where Ansible is packaged yet, you can install Ansible 
-using "make install".  This is done through `python-distutils`::
+If you are not working from a distribution where Ansible is packaged yet, you can install Ansible
+using "make install".  This is done through ``python-distutils``::
 
     $ git clone git://github.com/ansible/ansible.git
     $ cd ./ansible
@@ -97,7 +97,7 @@ build an RPM you can distribute and install::
     $ make rpm
     $ sudo rpm -Uvh ~/rpmbuild/RPMS/noarch/ansible-*.noarch.rpm
 
-Note that if you are tracking the upstream source (i.e. git), the RPM revision will not be 
+Note that if you are tracking the upstream source (i.e. git), the RPM revision will not be
 bumped with every source code change.  To get around this, you can use
 ``rpm -Uvh`` with ``--force`` when RPM tells you the package is still at the
 same version.  This is perfectly safe to do.
@@ -135,10 +135,10 @@ By default, ansible uses paramiko to talk to managed nodes over SSH.  Paramiko i
 very transparently, requires no configuration, and is a good choice for most users.
 However, it does not support some advanced SSH features that folks will want to use.
 
-Starting in version 0.5, if you want to leverage more advanced SSH features (such as Kerberized SSH or jump hosts), 
+Starting in version 0.5, if you want to leverage more advanced SSH features (such as Kerberized SSH or jump hosts),
 pass the flag "--connection=ssh" to any ansible command, or set the
 ANSIBLE_TRANSPORT environment variable to 'ssh'. This will cause Ansible to use openssh
-tools instead.  
+tools instead.
 
 If ANSIBLE_SSH_ARGS are not set, ansible will try to use some sensible ControlMaster options
 by default.  You are free to override this environment variable, but should still pass ControlMaster
@@ -170,20 +170,20 @@ Now ping all your nodes::
 
     ansible all -m ping
 
-If you want to access machines remotely as a different user than root, you will want to 
+If you want to access machines remotely as a different user than root, you will want to
 specify the '-u' option to ansible.  If you would like to access sudo mode, there are also flags to do that::
 
     # as bruce
     ansible all -m ping -u bruce
 
     # as bruce, sudoing to root
-    ansible all -m ping -u bruce --sudo 
-  
+    ansible all -m ping -u bruce --sudo
+
     # as bruce, sudoing to batman
     ansible all -m ping -u bruce --sudo --sudo-user batman
 
 Now run a live command on all of your nodes::
-  
+
     ansible all -a "/bin/echo hello"
 
 Congratulations.  You've just contacted your nodes with Ansible.  It's
@@ -204,4 +204,3 @@ explore, but you already have a fully working infrastructure!
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-
