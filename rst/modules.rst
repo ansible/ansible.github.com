@@ -271,6 +271,51 @@ Example action from Ansible :doc:`playbooks`::
     file path=/some/path state=directory setype=httpd_sys_content_t
     file path=/some/path state=directory context=default
 
+.. _get_url:
+
+get_url
+```````
+
+Retrieve a file specified by a URL.
+
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| parameter          | required | default | comments                                                                   |
++====================+==========+=========+============================================================================+
+| url                | yes      |         | URL that identifies the file to download                                   |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| dest               | yes      |         | the name of the downloaded file                                            |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| mode               | no       |         | mode the file or directory shoudl be, such as 0644 as would be fed to      |
+|                    |          |         | chmod.  English modes like 'g+x' are not yet supported                     |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| owner              | no       |         | name of the user that should own the file/directory, as would be fed to    |
+|                    |          |         | chown                                                                      |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| group              | no       |         | name of the group that should own the file/directory, as would be fed to   |
+|                    |          |         | group                                                                      |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| seuser             |          |         | user part of SELinux file context.  Will default to system policy, if      |
+|                    |          |         | applicable.  If set to '_default', it will use the 'user' portion of the   | 
+|                    |          |         | the policy if available                                                    |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| serole             |          |         | role part of SELinux file context, '_default' feature works as above.      |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| setype             |          |         | type part of SELinux file context, '_default' feature works as above       |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| selevel            |          | s0      | level part of the SELinux file context.  This is the MLS/MCS attribute,    |
+|                    |          |         | sometimes known as the 'range'.  '_default' feature works as above         |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+| context            |          |         | accepts only 'default' as a value.  This will restore a file's selinux     |
+|                    |          |         | context in the policy.  Does nothing if no default is available.           |
++--------------------+----------+---------+----------------------------------------------------------------------------+
+
+
+Example action from Ansible :doc:`playbooks`::
+
+    get_url url=http://www.example.com/myfile.zip dest=/tmp/download.zip mode=0444
+
+
+
 .. _git:
 
 git
