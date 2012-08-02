@@ -5,7 +5,7 @@ Introducing Ansible
 Ansible is a radically simple model-driven configuration management, deployment, 
 and command execution framework.  Other tools in this space have been too complicated for too long, 
 require too much bootstrapping, and have too much learning curve.  By comparison, Ansible is dead simple 
-and painless to extend. Puppet and Chef have about 60k lines of code.  Ansible's core is a little over 2000 lines.
+and painless to extend. Puppet and Chef have about **60k** lines of code.  Ansible's core is a little over **2000** lines.
 
 Ansible isn't just for configuration management -- it's also great for ad hoc tasks, quickly firing off commands against nodes, and it excels at complex multi-tier deployment tasks, being designed for that purpose from day one.  
 
