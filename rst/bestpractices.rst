@@ -6,15 +6,16 @@ Here are some tips for making the most of Ansible.
 Always Mention State
 ++++++++++++++++++++
 
-The 'state' parameter is optional to a lot of modules.  Whether state=present or state=absent, it's always
-best to leave that parameter in your playbooks to make it clear, especially as some modules support additional
-states.
+The ``state`` parameter is optional to a lot of modules.  Whether
+``state=present`` or ``state=absent``, it's always best to leave that
+parameter in your playbooks to make it clear, especially as some
+modules support additional states.
 
 Group By Roles
 ++++++++++++++
 
 A system can be in multiple groups.  See :doc:`patterns`.   Having groups named after things like
-'webservers' and 'dbservers' is repeated in the examples because it's a very powerful concept.
+*webservers* and *dbservers* is repeated in the examples because it's a very powerful concept.
 
 This allows playbooks to target machines based on role, as well as to assign role specific variables
 using the group variable system.
@@ -24,30 +25,23 @@ Directory Organization
 
 Playbooks should be organized like this::
 
-    (root of source control repository)
-
-        global_vars.yml # variables for all playbooks
-        acme/           # each playbook has a directory
-
-            setup.yml   # playbook to manage the service
-            stop.yml    # playbook to halt the service (optional)
-
-            files/
-               some_file_path_foo.conf
-
-            templates/
-               etc_acme_conf_acme.conf
-               etc_other_conf_other.conf
-
-            vars/
-               main.yml  # variables specific to this playbook
-
-            handlers/
-               main.yml
-
-            tasks/
-               setup.yml
-               stop.yml
+    # root of source control repository
+    ├── acme/
+    │   ├── setup.yml
+    │   └── stop.yml
+    ├── files/
+    │   └── some_file_path_foo.conf
+    ├── handlers/
+    │   └── main.yml
+    ├── tasks/
+    │   ├── setup.yml
+    │   └── stop.yml
+    ├── templates/
+    │   ├── etc_acme_conf_acme.conf
+    │   └── etc_other_conf_other.conf
+    ├── vars/
+    │   └── main.yml
+    └── global_vars.yml
 
 Any directories or files not needed can be omitted.  Not all modules may require ``vars`` or ``files`` sections, though most
 will require ``handlers``, ``tasks``, and ``templates``.  To review what each of these sections do, see :doc:`playbooks` and :doc:`playbooks2`.
