@@ -3,7 +3,7 @@ API & Integrations
 
 There are two major ways to use Ansible from an API perspective.   The primary way
 is to use the Ansible python API to control nodes.  Ansible is written in its own
-API so you have a considerable amount of power there.  
+API so you have a considerable amount of power there.
 
 Also covered here, Ansible's
 list of hosts, groups, and variables assigned to each host can be driven from
@@ -13,7 +13,7 @@ Python API
 ----------
 
 The Python API is very powerful, and is how the ansible CLI and ansible-playbook
-are implemented.  
+are implemented.
 
 It's pretty simple::
 
@@ -85,7 +85,7 @@ External Inventory
 ------------------
 
 Often a user of a configuration management system will want to keep inventory
-in a different system.  Frequent examples include LDAP, `Cobbler <http://cobbler.github.com>`_, 
+in a different system.  Frequent examples include LDAP, `Cobbler <http://cobbler.github.com>`_,
 or a piece of expensive enterprisey CMDB software.   Ansible easily supports all
 of these options via an external inventory system.
 
@@ -102,7 +102,7 @@ When the external node script is called with the single argument '--list', the s
     {
         'databases'  : [ 'host1.example.com', 'host2.example.com' ],
         'webservers' : [ 'host2.example.com', 'host3.example.com' ],
-        'atlanta'    : [ 'host1.example.com', 'host4.example.com', 'host5.example.com' ] 
+        'atlanta'    : [ 'host1.example.com', 'host4.example.com', 'host5.example.com' ]
     }
 
 When called with the arguments '--host <hostname>' (where <hostname> is a host from above), the script must return either an empty JSON
@@ -194,7 +194,7 @@ After a few moments, you should see your entire EC2 inventory across all regions
 
 Since each region requires its own API call, if you are only using a small set of regions, feel free to edit ``ec2.ini`` and list only the regions you are interested in. There are other config options in ``ec2.ini`` including cache control, and destination variables.
 
-At their heart, inventory files are simply a mapping from some name to a destination address. The default ``ec2.ini`` settings are configured for running Ansible from outside EC2 (from your laptop for example). If you are running Ansible from within EC2, internal DNS names and IP addresses may make more sense than public DNS names. In this case, you can modify the ``destination_variable`` in ``ec2.ini`` to be the private DNS name of an instance. This is particularly important when running Ansible within a private subnet inside a VPC, where the only way to access an instance is via its private IP address. For VPC instances, `vpc_destination_variable` in ``ec2.ini`` provides a means of using which ever `boto.ec2.instance variable <http://docs.pythonboto.org/en/latest/ref/ec2.html#module-boto.ec2.instance>`_ makes the most sense for your use case.
+At their heart, inventory files are simply a mapping from some name to a destination address. The default ``ec2.ini`` settings are configured for running Ansible from outside EC2 (from your laptop for example). If you are running Ansible from within EC2, internal DNS names and IP addresses may make more sense than public DNS names. In this case, you can modify the ``destination_variable`` in ``ec2.ini`` to be the private DNS name of an instance. This is particularly important when running Ansible within a private subnet inside a VPC, where the only way to access an instance is via its private IP address. For VPC instances, ``vpc_destination_variable`` in ``ec2.ini`` provides a means of using which ever `boto.ec2.instance variable <http://docs.pythonboto.org/en/latest/ref/ec2.html#module-boto.ec2.instance>`_ makes the most sense for your use case.
 
 The EC2 external inventory provides mappings to instances from several groups:
 
@@ -202,7 +202,7 @@ Instance ID
   These are groups of one since instance IDs are unique.
   e.g.
   ``i-00112233``
-  ``i-a1b1c1d1`` 
+  ``i-a1b1c1d1``
 
 Region
   A group of all instances in an AWS region.
@@ -283,4 +283,3 @@ To see the complete list of variables available for an instance, run the script 
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-

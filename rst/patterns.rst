@@ -5,81 +5,89 @@ Inventory & Patterns
 
 Ansible works against multiple systems in your infrastructure at the
 same time.  It does this by selecting portions of systems listed in
-Ansible's inventory file, which defaults to /etc/ansible/hosts.
+Ansible's inventory file, which defaults to ``/etc/ansible/hosts``.
 
 .. _inventoryformat:
 
 Hosts and Groups
 ++++++++++++++++
 
-The format for /etc/ansible/hosts is an INI format and looks like this::
+The format for /etc/ansible/hosts is an INI format and looks like this:
 
-    mail.example.com
+.. code-block:: ini
 
-    [webservers]
-    foo.example.com
-    bar.example.com
+   mail.example.com
 
-    [dbservers]
-    one.example.com
-    two.example.com
-    three.example.com
+   [webservers]
+   foo.example.com
+   bar.example.com
+
+   [dbservers]
+   one.example.com
+   two.example.com
+   three.example.com
 
 The things in brackets are group names. You don't have to have them,
 but they are useful.
 
 If you have hosts that run on non-standard SSH ports you can put the port number
-after the hostname with a colon.  
+after the hostname with a colon:
 
-    four.example.com:5309
+ four.example.com:5309
 
 Selecting Targets
 +++++++++++++++++
 
-We'll go over how to use the command line in :doc:`examples` section, however, basically it looks like this::
+We'll go over how to use the command line in :doc:`examples` section, however, basically it looks like this:
 
-    ansible <pattern_goes_here> -m <module_name> -a <arguments>
-    
-Such as::
+.. code-block:: bash
 
-    ansible webservers -m service -a "name=httpd state=restarted"
+    $ ansible <pattern_goes_here> -m <module_name> -a <arguments>
+
+Such as:
+
+.. code-block:: bash
+
+    $ ansible webservers -m service -a "name=httpd state=restarted"
 
 Within :doc:`playbooks`, these patterns can be used for even greater purposes.
 
 Anyway, to use Ansible, you'll first need to know how to tell Ansible which hosts in your inventory file to talk to.
 This is done by designating particular host names or groups of hosts.
 
-The following patterns target all hosts in the inventory file::
+The following patterns target all hosts in the inventory file:
 
-    all
-    *    
+* ``all``
+* ``*``
 
-Basically 'all' is an alias for '*'.  It is also possible to address a specific host or hosts::
+Basically ``all`` is an alias for ``*``.  It is also possible to
+address a specific host or hosts:
 
-    one.example.com
-    one.example.com:two.example.com
-    192.168.1.50
-    192.168.1.*
- 
+* ``one.example.com``
+* ``one.example.com:two.example.com``
+* ``192.168.1.50``
+* ``192.168.1.*``
+
 The following patterns address one or more groups, which are denoted
-with the aforementioned bracket headers in the inventory file::
+with the aforementioned bracket headers in the inventory file:
 
-    webservers
-    webservers:dbservers
+* ``webservers``
+* ``webservers:dbservers``
 
-You can exclude groups as well, for instance, all webservers not in Phoenix::
+You can exclude groups as well, for instance, all webservers not in
+*Phoenix*:
 
-    webservers:!phoenix
+* ``webservers:!phoenix``
 
 Individual host names (or IPs), but not groups, can also be referenced using
-wildcards::
+wildcards:
 
-    *.example.com
-    *.com
+* ``*.example.com``
+* ``*.com``
 
-It's also ok to mix wildcard patterns and groups at the same time::
+It's also ok to mix wildcard patterns and groups at the same time:
 
-    one*.com:dbservers
+* ``one*.com:dbservers``
 
 
 Easy enough.  See :doc:`examples` and then :doc:`playbooks` for how to do things to selected hosts.
@@ -87,8 +95,10 @@ Easy enough.  See :doc:`examples` and then :doc:`playbooks` for how to do things
 Host Variables
 ++++++++++++++
 
-It is easy to assign variables to hosts that will be used later in playbooks::
- 
+It is easy to assign variables to hosts that will be used later in playbooks:
+
+.. code-block:: ini
+
    [atlanta]
    host1 http_port=80 maxRequestsPerChild=808
    host2 http_port=303 maxRequestsPerChild=909
@@ -97,7 +107,9 @@ It is easy to assign variables to hosts that will be used later in playbooks::
 Group Variables
 +++++++++++++++
 
-Variables can also be applied to an entire group at once::
+Variables can also be applied to an entire group at once:
+
+.. code-block:: ini
 
    [atlanta]
    host1
@@ -110,9 +122,11 @@ Variables can also be applied to an entire group at once::
 Groups of Groups, and Group Variables
 +++++++++++++++++++++++++++++++++++++
 
-It is also possible to make groups of groups and assign
-variables to groups.  These variables can be used by /usr/bin/ansible-playbook, but not
-/usr/bin/ansible::
+It is also possible to make groups of groups and assign variables to
+groups.  These variables can be used by /usr/bin/ansible-playbook, but
+not /usr/bin/ansible:
+
+.. code-block:: ini
 
    [atlanta]
    host1
@@ -139,47 +153,59 @@ variables to groups.  These variables can be used by /usr/bin/ansible-playbook, 
    southeast
 
 If you need to store lists or hash data, or prefer to keep host and group specific variables
-seperate from the inventory file, see the next section.
+separate from the inventory file, see the next section.
 
 Splitting Out Host and Group Specific Data
 ++++++++++++++++++++++++++++++++++++++++++
 
-In Ansible 0.6 and later, in addition to the storing variables directly in the INI file, host and
-group variables can be stored in individual files relative to the inventory file.  These
-variable files are in YAML format.
+.. versionadded:: 0.6
 
-Assuming the inventory file path is::
+In addition to the storing variables directly in the INI file, host
+and group variables can be stored in individual files relative to the
+inventory file.  These variable files are in YAML format.
 
-    /etc/ansible/hosts
+Assuming the inventory file path is:
 
-If the host is named 'foosball', and in groups 'raleigh' and 'webservers', variables
-in YAML files at the following locations will be made available to the host::
+ /etc/ansible/hosts
 
-    /etc/ansible/group_vars/raleigh
-    /etc/ansible/group_vars/webservers
-    /etc/ansible/host_vars/foosball
+If the host is named *foosball*, and in groups *raleigh* and *webservers*, variables
+in YAML files at the following locations will be made available to the host:
 
-For instance, suppose you have hosts grouped by datacenter, and each datacenter
-uses some different servers.  The data in the groupfile '/etc/ansible/group_vars/raleigh' for
-the 'raleigh' group might look like::
+* ``/etc/ansible/group_vars/raleigh``
+* ``/etc/ansible/group_vars/webservers``
+* ``/etc/ansible/host_vars/foosball``
+
+For instance, suppose you have hosts grouped by *datacenter*, and each
+*datacenter* uses some different servers.  The data in the groupfile
+``/etc/ansible/group_vars/raleigh`` for the *raleigh* group might look
+like::
 
     ---
     ntp_server: acme.example.org
     database_server: storage.example.org
 
-It is ok if these files do not exist, this is an optional feature.
 
-Tip: Keeping your inventory file and variables in a git repo (or other version control) 
-is an excellent way to track changes to your inventory and host variables.
+.. note::
+   It is ok if these files do not exist, this is an optional feature.
 
-Tip: If you ever have two python interpreters on a system, set a variable called 'ansible_python_interpreter' to
-the Python interpreter path you would like to use.
+.. Tip::
+   Keeping your inventory file and variables in a git repo (or other
+   version control) is an excellent way to track changes to your
+   inventory and host variables.
+
+.. versionadded:: 0.5
+   If you ever have two python interpreters on a system, set a
+   variable called ``ansible_python_interpreter`` to the Python
+   interpreter path you would like to use.
 
 YAML Inventory
 ++++++++++++++
 
-Ansible's YAML inventory format is deprecated and will be removed in Ansible 0.7.  Ansible 0.6 includes
-a `conversion script <https://github.com/ansible/ansible/blob/devel/examples/scripts/yaml_to_ini.py>`_.
+.. deprecated:: 0.7
+
+Ansible's YAML inventory format is deprecated and will be removed in
+Ansible 0.7.  Ansible 0.6 includes a `conversion script
+<https://github.com/ansible/ansible/blob/devel/examples/scripts/yaml_to_ini.py>`_.
 
 Usage::
 
@@ -195,4 +221,3 @@ Usage::
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-

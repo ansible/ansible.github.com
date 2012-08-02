@@ -1,12 +1,14 @@
+.. highlight:: yaml
+
 YAML Syntax
 ===========
 
 This page provides a basic overview of correct YAML syntax, which is how Ansible
-playbooks (our configuration management language) are expressed.  
+playbooks (our configuration management language) are expressed.
 
-We use YAML because it is easier to read and write for humans than other common 
+We use YAML because it is easier to read and write for humans than other common
 data formats like XML or JSON.  Further, there are libraries available for reading
-and writing YAML in most programming languages.  
+and writing YAML in most programming languages.
 
 You may also wish to read :doc:`playbooks` at the same time to see how this
 is used in practice.
@@ -15,14 +17,15 @@ is used in practice.
 YAML Basics
 -----------
 
-For `ansible`, nearly every YAML file starts with a list.   
-Each item in the list is a list of key/value pairs, commonly
-called a "hash" or a "dictionary".  So, we need to know how
-to write lists and dictionaries in YAML.
+For Ansible, nearly every YAML file starts with a list.  Each item in
+the list is a list of key/value pairs, commonly called a *hash* or a
+*dictionary*.  So, we need to know how to write lists and dictionaries
+in YAML.
 
-There's another small quirk to YAML.  All YAML files (regardless of their association with
-`ansible` or not) should start with ``---``.  This is just a YAML
-format thing that means "this is the start of a document".
+There's another small quirk to YAML.  All YAML files (regardless of
+their association with Ansible or not) should start with ``---``.
+This is just a YAML format thing that means "this is the start of a
+document".
 
 All members of a list are lines beginning at the same indentation level starting
 with a ``-`` (dash) character::
@@ -50,7 +53,7 @@ Dictionaries can also be represented in an abbreviated form if you really want t
 
 .. _truthiness:
 
-Ansible doesn't really use these too much, but you can also specify a 
+Ansible doesn't really use these too much, but you can also specify a
 boolean value (true/false) in several forms::
 
     ---
@@ -78,7 +81,7 @@ has nothing to do with Ansible, but will give you a feel for the format::
 	dotnet: Lame
 
 That's all you really need to know about YAML to get started writing
-`Ansible` playbooks.
+Ansible :doc:`playbooks`.
 
 .. seealso::
 
@@ -92,4 +95,3 @@ That's all you really need to know about YAML to get started writing
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-

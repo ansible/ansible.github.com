@@ -4,6 +4,10 @@ Getting Started
 Requirements
 ````````````
 
+.. There's a lot of shell examples on this page. Set 'bash' as the
+.. default pygments parser.
+.. highlight:: bash
+
 Requirements for Ansible are extremely minimal.
 
 Ansible is written for Python 2.6.  If you are running Python 2.5 on an "Enterprise Linux" variant,
@@ -19,29 +23,35 @@ In additon to Python 2.6, you will want the following packages:
 On the managed nodes, you only need Python 2.4 or later, but if you are are running less than Python 2.6 on them, you will
 also need:
 
-* ``python-simplejson`` 
+* ``python-simplejson``
 
-(Note that even that's not quite true.  Ansible's "raw" module (for executing commands in a quick and dirty way) and the copy module -- some of the most basic features in ansible don't even need that.  So technically, you can use Ansible to install python-simplejson using the raw module, which then allows you to use everything else.  That's jumping ahead though.)
+(Note that even that's not quite true.  Ansible's :ref:`raw` module (for
+executing commands in a quick and dirty way) and the :ref:`copy` module --
+some of the most basic features in ansible don't even need that.  So
+technically, you can use Ansible to install python-simplejson using
+the raw module, which then allows you to use everything else.  That's
+jumping ahead though.)
 
 Python 2.6 EPEL instructions for RHEL and CentOS 5
 ``````````````````````````````````````````````````
 
-These distributions don't have Python 2.6 by default, but it is easily installable.
+These distributions don't have Python 2.6 by default, but it is easily
+installable. If you have not already done so, `configure EPEL
+<http://fedoraproject.org/wiki/EPEL>`_, and then::
 
-* If you have not already done so, `configure EPEL <http://fedoraproject.org/wiki/EPEL>`_
-* yum install python26 python26-PyYAML python26-paramiko python26-jinja2
+    $ sudo yum install python26 python26-PyYAML python26-paramiko python26-jinja2
 
 Getting Ansible
 ```````````````
 
 If you are interested in using all the latest features, you may wish to keep up to date
 with the development branch of the git checkout.  This also makes it easiest to contribute
-back to the project.  
+back to the project.
 
 Instructions for installing from source are below.
 
 Ansible's release cycles are about one month long.  Due to this
-short release cycle, any bugs will generally be fixed in the next release versus maintaining 
+short release cycle, any bugs will generally be fixed in the next release versus maintaining
 backports on the stable branch.
 
 You may also wish to follow the `Github project <https://github.com/ansible/ansible>`_ if
@@ -67,13 +77,17 @@ You can optionally specify an inventory file (see :doc:`patterns`) other than /e
 Now let's test things::
 
     $ ansible all -m ping --ask-pass
+    SSH password:
+    127.0.0.1 | success >> {
+        "ping": "pong"
+    }
 
 
 Make Install
 ++++++++++++
 
-If you are not working from a distribution where Ansible is packaged yet, you can install Ansible 
-using "make install".  This is done through `python-distutils`::
+If you are not working from a distribution where Ansible is packaged yet, you can install Ansible
+using ``make install``.  This is done through ``python-distutils``::
 
     $ git clone git://github.com/ansible/ansible.git
     $ cd ./ansible
@@ -84,20 +98,20 @@ Via RPM
 +++++++
 
 RPMs for the last Ansible release are available for `EPEL <http://fedoraproject.org/wiki/EPEL>`_ 6 and currently supported
-Fedora distributions.
+Fedora distributions::
 
     # install the epel-release RPM if needed on CentOS, RHEL, or Scientific Linux
     $ sudo yum install ansible
 
-You can also use the ``make rpm`` command to
-build an RPM you can distribute and install::
+You can also use the ``make rpm`` command to build an RPM you can
+distribute and install::
 
     $ git clone git://github.com/ansible/ansible.git
     $ cd ./ansible
     $ make rpm
     $ sudo rpm -Uvh ~/rpmbuild/RPMS/noarch/ansible-*.noarch.rpm
 
-Note that if you are tracking the upstream source (i.e. git), the RPM revision will not be 
+Note that if you are tracking the upstream source (i.e. git), the RPM revision will not be
 bumped with every source code change.  To get around this, you can use
 ``rpm -Uvh`` with ``--force`` when RPM tells you the package is still at the
 same version.  This is perfectly safe to do.
@@ -109,12 +123,14 @@ Gentoo eBuilds are available `here <https://github.com/uu/ubuilds>`_
 
 Debian package recipes can be built from the source checkout, run::
 
-    make debian
+    $ make debian
 
-An Arch PKGBUILD is available on `AUR <https://aur.archlinux.org/packages.php?ID=58621>`_
-If you have python3 installed on Arch, you probably want to symlink python to python2::
+An Arch PKGBUILD is available on `AUR
+<https://aur.archlinux.org/packages.php?ID=58621>`_.  If you have
+python3 installed on Arch, you probably want to symlink python to
+python2::
 
-    sudo ln -sf /usr/bin/python2 /usr/bin/python
+    $ sudo ln -sf /usr/bin/python2 /usr/bin/python
 
 If you would like to package Ansible for Homebrew, BSD, or others,
 please stop by the mailing list and say hi!
@@ -131,21 +147,39 @@ project page:
 Choosing Between Paramiko and Native SSH
 ````````````````````````````````````````
 
-By default, ansible uses paramiko to talk to managed nodes over SSH.  Paramiko is fast, works
-very transparently, requires no configuration, and is a good choice for most users.
-However, it does not support some advanced SSH features that folks will want to use.
+By default, ansible uses `Paramiko <http://www.lag.net/paramiko/>`_ to
+talk to managed nodes over SSH.  Paramiko is fast, works very
+transparently, requires no configuration, and is a good choice for
+most users.  However, it does not support some advanced SSH features
+that folks will want to use.
 
-Starting in version 0.5, if you want to leverage more advanced SSH features (such as Kerberized SSH or jump hosts), 
-pass the flag "--connection=ssh" to any ansible command, or set the
-ANSIBLE_TRANSPORT environment variable to 'ssh'. This will cause Ansible to use openssh
-tools instead.  
+If ``ANSIBLE_SSH_ARGS`` are not set, ansible will try to use some
+sensible `ControlMaster
+<http://www.anchor.com.au/blog/2010/02/ssh-controlmaster-the-good-the-bad-the-ugly/>`_
+options by default.  You are free to override this environment
+variable, but should still pass ControlMaster options to ensure
+performance of this transport.  With ControlMaster in use, both
+transports are roughly the same speed.  Without CM, the binary ssh
+transport is signficantly slower.
 
-If ANSIBLE_SSH_ARGS are not set, ansible will try to use some sensible ControlMaster options
-by default.  You are free to override this environment variable, but should still pass ControlMaster
-options to ensure performance of this transport.  With ControlMaster in use, both transports
-are roughly the same speed.  Without CM, the binary ssh transport is signficantly slower.
+.. versionadded:: 0.5
+   If you want to leverage more advanced SSH features (such as
+   Kerberized SSH, or jump hosts), pass the flag ``--connection=ssh``
+   to any ansible command, or set the ``ANSIBLE_TRANSPORT``
+   environment variable to ``ssh``. This will cause Ansible to use
+   OpenSSH tools instead.
 
-If none of this makes sense to you, the default paramiko option is probably fine.
+.. note::
+   If none of this makes sense to you, the default Paramiko option is
+   probably fine.
+
+.. note::
+   ControlMaster refers to an ssh setting that allows you to use the
+   same TCP connection for multiple SSH sessions. A *session
+   multiplexer*, if you will. This can potentially speed operations up
+   because: authentication only needs to happen once (per host), and
+   each subsequent SSH session thereafter simply reuses the already
+   established TCP connection.
 
 Your first commands
 ```````````````````
@@ -161,30 +195,32 @@ which you have your SSH key in ``authorized_keys``::
 
 Set up SSH agent to avoid retyping passwords::
 
-    ssh-agent bash
-    ssh-add ~/.ssh/id_rsa
+    $ ssh-agent bash
+    $ ssh-add ~/.ssh/id_rsa
 
-(Depending on your setup, you may wish to ansible's --private-key-file option to specify a pem file instead)
+(Depending on your setup, you may wish to ansible's
+``--private-key-file`` option to specify a pem file instead)
 
 Now ping all your nodes::
 
-    ansible all -m ping
+    $ ansible all -m ping
 
-If you want to access machines remotely as a different user than root, you will want to 
-specify the '-u' option to ansible.  If you would like to access sudo mode, there are also flags to do that::
+If you want to access machines remotely as a different user than root,
+you will want to specify the ``-u`` option to ansible.  If you would
+like to access sudo mode, there are also flags to do that::
 
     # as bruce
-    ansible all -m ping -u bruce
+    $ ansible all -m ping -u bruce
 
     # as bruce, sudoing to root
-    ansible all -m ping -u bruce --sudo 
-  
+    $ ansible all -m ping -u bruce --sudo
+ 
     # as bruce, sudoing to batman
-    ansible all -m ping -u bruce --sudo --sudo-user batman
+    $ ansible all -m ping -u bruce --sudo --sudo-user batman
 
 Now run a live command on all of your nodes::
-  
-    ansible all -a "/bin/echo hello"
+
+    $ ansible all -a "/bin/echo hello"
 
 Congratulations.  You've just contacted your nodes with Ansible.  It's
 now time to read some of the more real-world :doc:`examples`, and explore
@@ -204,4 +240,3 @@ explore, but you already have a fully working infrastructure!
        Questions? Help? Ideas?  Stop by the list on Google Groups
    `irc.freenode.net <http://irc.freenode.net>`_
        #ansible IRC chat channel
-
