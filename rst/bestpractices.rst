@@ -54,8 +54,7 @@ will require ``handlers``, ``tasks``, and ``templates``.  To review what each of
 
 The acme/setup.yml playbook would be as simple as::
 
-    ----
-
+    ---
     - hosts: webservers
       user: root
 
