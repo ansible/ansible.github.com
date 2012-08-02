@@ -12,7 +12,9 @@ Ansible's inventory file, which defaults to ``/etc/ansible/hosts``.
 Hosts and Groups
 ++++++++++++++++
 
-The format for /etc/ansible/hosts is an INI format and looks like this::
+The format for /etc/ansible/hosts is an INI format and looks like this:
+
+.. code-block:: ini
 
    mail.example.com
 
@@ -29,20 +31,24 @@ The things in brackets are group names. You don't have to have them,
 but they are useful.
 
 If you have hosts that run on non-standard SSH ports you can put the port number
-after the hostname with a colon::
+after the hostname with a colon:
 
-    four.example.com:5309
+ four.example.com:5309
 
 Selecting Targets
 +++++++++++++++++
 
-We'll go over how to use the command line in :doc:`examples` section, however, basically it looks like this::
+We'll go over how to use the command line in :doc:`examples` section, however, basically it looks like this:
 
-    ansible <pattern_goes_here> -m <module_name> -a <arguments>
+.. code-block:: bash
 
-Such as::
+    $ ansible <pattern_goes_here> -m <module_name> -a <arguments>
 
-    ansible webservers -m service -a "name=httpd state=restarted"
+Such as:
+
+.. code-block:: bash
+
+    $ ansible webservers -m service -a "name=httpd state=restarted"
 
 Within :doc:`playbooks`, these patterns can be used for even greater purposes.
 
@@ -51,37 +57,37 @@ This is done by designating particular host names or groups of hosts.
 
 The following patterns target all hosts in the inventory file:
 
- * ``all``
- * ``*``
+* ``all``
+* ``*``
 
 Basically ``all`` is an alias for ``*``.  It is also possible to
 address a specific host or hosts:
 
- * ``one.example.com``
- * ``one.example.com:two.example.com``
- * ``192.168.1.50``
- * ``192.168.1.*``
+* ``one.example.com``
+* ``one.example.com:two.example.com``
+* ``192.168.1.50``
+* ``192.168.1.*``
 
 The following patterns address one or more groups, which are denoted
 with the aforementioned bracket headers in the inventory file:
 
- * ``webservers``
- * ``webservers:dbservers``
+* ``webservers``
+* ``webservers:dbservers``
 
 You can exclude groups as well, for instance, all webservers not in
 *Phoenix*:
 
- * ``webservers:!phoenix``
+* ``webservers:!phoenix``
 
 Individual host names (or IPs), but not groups, can also be referenced using
 wildcards:
 
- * ``*.example.com``
- * ``*.com``
+* ``*.example.com``
+* ``*.com``
 
 It's also ok to mix wildcard patterns and groups at the same time:
 
- * ``one*.com:dbservers``
+* ``one*.com:dbservers``
 
 
 Easy enough.  See :doc:`examples` and then :doc:`playbooks` for how to do things to selected hosts.
@@ -89,7 +95,9 @@ Easy enough.  See :doc:`examples` and then :doc:`playbooks` for how to do things
 Host Variables
 ++++++++++++++
 
-It is easy to assign variables to hosts that will be used later in playbooks::
+It is easy to assign variables to hosts that will be used later in playbooks:
+
+.. code-block:: ini
 
    [atlanta]
    host1 http_port=80 maxRequestsPerChild=808
@@ -99,7 +107,9 @@ It is easy to assign variables to hosts that will be used later in playbooks::
 Group Variables
 +++++++++++++++
 
-Variables can also be applied to an entire group at once::
+Variables can also be applied to an entire group at once:
+
+.. code-block:: ini
 
    [atlanta]
    host1
@@ -114,7 +124,9 @@ Groups of Groups, and Group Variables
 
 It is also possible to make groups of groups and assign variables to
 groups.  These variables can be used by /usr/bin/ansible-playbook, but
-not /usr/bin/ansible::
+not /usr/bin/ansible:
+
+.. code-block:: ini
 
    [atlanta]
    host1
@@ -152,9 +164,9 @@ In addition to the storing variables directly in the INI file, host
 and group variables can be stored in individual files relative to the
 inventory file.  These variable files are in YAML format.
 
-Assuming the inventory file path is::
+Assuming the inventory file path is:
 
-    /etc/ansible/hosts
+ /etc/ansible/hosts
 
 If the host is named *foosball*, and in groups *raleigh* and *webservers*, variables
 in YAML files at the following locations will be made available to the host:
@@ -166,9 +178,7 @@ in YAML files at the following locations will be made available to the host:
 For instance, suppose you have hosts grouped by *datacenter*, and each
 *datacenter* uses some different servers.  The data in the groupfile
 ``/etc/ansible/group_vars/raleigh`` for the *raleigh* group might look
-like:
-
-.. code-block:: yaml
+like::
 
     ---
     ntp_server: acme.example.org
