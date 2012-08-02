@@ -1,6 +1,10 @@
 Advanced Playbooks
 ==================
 
+.. There's a lot of YAML examples on this page. Set 'yaml' as the
+.. default pygments parser.
+.. highlight:: yaml
+
 Here are some advanced features of the playbooks language.  Using all
 of these features are not neccessary, but many of them will prove
 useful.  If a feature doesn't seem immediately relevant, feel free to
@@ -307,14 +311,16 @@ instead of ``vars/CentOS.yml``, before falling back on
 
 To use this conditional import feature, you'll need facter or ohai
 installed prior to running the playbook, but you can of course push
-this out with Ansible if you like::
+this out with Ansible if you like:
+
+.. code-block:: bash
 
     # for facter
-    ansible -m yum -a "pkg=facter ensure=installed"
-    ansible -m yum -a "pkg=ruby-json ensure=installed"
+    $ ansible -m yum -a "pkg=facter ensure=installed"
+    $ ansible -m yum -a "pkg=ruby-json ensure=installed"
 
     # for ohai
-    ansible -m yum -a "pkg=ohai ensure=installed"
+    $ ansible -m yum -a "pkg=ohai ensure=installed"
 
 Ansible's approach to configuration -- separating variables from
 tasks, keeps your playbooks from turning into arbitrary code with ugly
@@ -424,9 +430,11 @@ for assuring the configuration of a system by putting a playbook on a crontab.  
 to run a playbook inside a OS installer, such as an Anaconda kickstart.
 
 To run an entire playbook locally, just set the ``hosts`` line to
-``hosts: 127.0.0.1`` and then run the playbook like so::
+``hosts: 127.0.0.1`` and then run the playbook like so:
 
-    ansible-playbook playbook.yml --connection=local
+.. code-block:: bash
+
+    $ ansible-playbook playbook.yml --connection=local
 
 Alternatively, a ``local`` connection can be used in a single playbook
 play, even if other plays in the playbook use the default remote
