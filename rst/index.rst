@@ -9,8 +9,15 @@ and painless to extend. Puppet and Chef have about **60k** lines of code.  Ansib
 
 Ansible isn't just for configuration management -- it's also great for ad hoc tasks, quickly firing off commands against nodes, and it excels at complex multi-tier deployment tasks, being designed for that purpose from day one.  
 
-Systems management doesn't have to be complicated.  We've learned well from the "Infrastructure is Code" movement.  
-Infrastructure should be easy and powerful to command, but it should not look like code, lest it acquire the disadvantages of a software project -- bugs, complexity, and overhead.  Infrastructure configurations should be simple, easy to develop, and easy to audit.  This is Ansible's philosophy and the main reason it's different.  Read on, though, and we'll tell you more.
+Systems management doesn't have to be complicated.  We've learned well
+from the `Infrastructure as Code
+<http://www.agileweboperations.com/the-implications-of-infrastructure-as-code>`_
+movement.  Infrastructure should be easy and powerful to command, but
+it should not look like code, lest it acquire the disadvantages of a
+software project -- bugs, complexity, and overhead.  Infrastructure
+configurations should be simple, easy to develop, and easy to audit.
+This is Ansible's philosophy and the main reason it's different.  Read
+on, though, and we'll tell you more.
 
 +---------------------------------------------------------------------+
 | Key Features                                                        |
