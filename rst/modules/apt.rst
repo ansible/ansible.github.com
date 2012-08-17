@@ -11,7 +11,7 @@ Manages apt-packages (such as for Debian/Ubuntu).
 | name               | no       |         | A package name or package specifier with version, like `foo` or `foo=1.0`, |
 |                    |          |         | or a comma-separated list (no spaces) of either.                           |
 +--------------------+----------+---------+----------------------------------------------------------------------------+
-| state              | no       | inst.   | 'installed', 'removed', or 'latest'.                                     |
+| state              | no       | inst.   | 'installed', 'removed', or 'latest'.                                       |
 +--------------------+----------+---------+----------------------------------------------------------------------------+
 | update_cache       | no       | no      | Run the equivalent of apt-get update before the operation.                 |
 |                    |          |         | Can be run as part of the package installation or a seperate step          |
