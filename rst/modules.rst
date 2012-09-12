@@ -61,6 +61,7 @@ Let's see what's available in the Ansible module library, out of the box:
 .. include:: modules/mysql_user.rst
 .. include:: modules/nagios.rst
 .. include:: modules/ohai.rst
+.. include:: modules/pause.rst
 .. include:: modules/ping.rst
 .. include:: modules/pip.rst
 .. include:: modules/postgresql_db.rst

@@ -464,6 +464,8 @@ The 'register' keyword decides what variable to save a result in.  The resulting
             only_if: "'${motd_contents.stdout}'.find('hi') != -1"
 
 
+.. _rolling-updates:
+
 Rolling Updates
 ```````````````
 
@@ -477,8 +479,9 @@ use case, you can define how many hosts ansible should manage at a single time b
       hosts: webservers
       serial: 3
 
-In the above example, if we had 100 hosts, 3 hosts in the group 'webservers' 
-would complete the play completely before moving on to the next 3 hosts. 
+In the above example, if we had 100 hosts, 3 hosts in the group
+'webservers' would complete the play completely before moving on to
+the next 3 hosts. See also: :ref:`the pause module<pause>`.
 
 Delegation
 ``````````
