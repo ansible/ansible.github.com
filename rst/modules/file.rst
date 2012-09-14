@@ -9,8 +9,9 @@ support the same options as the file module -- including 'copy', 'template', and
 +--------------------+----------+---------+----------------------------------------------------------------------------+
 | parameter          | required | default | comments                                                                   |
 +====================+==========+=========+============================================================================+
-| dest               | yes      |         | defines the file being managed, unless when used with state=link, and      |
-|                    |          |         | then sets the destination to create a symbolic link to using 'src'         |
+| path               | yes      |         | defines the file being managed, unless when used with state=link, and      |
+|                    |          |         | then sets the destination to create a symbolic link to using 'src'.        |
+|                    |          |         | 'dest' and 'name' are aliases to 'path' and may be used instead.           |
 +--------------------+----------+---------+----------------------------------------------------------------------------+
 | state              |          | file    | values are 'file', 'link', 'directory', or 'absent'.  If directory,        |
 |                    |          |         | all immediate subdirectories will be created if they do not exist.  If     |
