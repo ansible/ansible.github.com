@@ -30,6 +30,8 @@ support the same options as the file module -- including 'copy', 'template', and
 +--------------------+----------+---------+----------------------------------------------------------------------------+
 | src                |          |         | path of the file to link to (applies only to state=link)                   |
 +--------------------+----------+---------+----------------------------------------------------------------------------+
+| force              |          | no      | if 'yes', overrides existing destination when needed                       |
++--------------------+----------+---------+----------------------------------------------------------------------------+
 | seuser             |          |         | user part of SELinux file context.  Will default to system policy, if      |
 |                    |          |         | applicable.  If set to '_default', it will use the 'user' portion of the   |
 |                    |          |         | the policy if available                                                    |
