@@ -485,9 +485,9 @@ Delegation
 
 .. versionadded:: 0.7
 
-If you want to perform a task on one host with reference to other hosts, use the 'delegate_to' keyword on a task.
+If you want to perform a task on one host, but run it once for each host in the play, use the ``delegate_to`` keyword on a task.
 This is ideal for placing nodes in a load balanced pool, or removing them.  It is also very useful for controlling
-outage windows.  Using this with the 'serial' keyword to control the number of hosts executing at one time is also
+outage windows.  Using this with the ``serial`` keyword to control the number of hosts executing at one time is also
 a good idea::
 
     ---
@@ -506,9 +506,11 @@ a good idea::
         action: command /usr/bin/add_back_to_pool $inventory_hostname
         delegate_to: 127.0.0.1
 
+The first task runs ``/usr/bin/take_out_of_pool`` on the machine running ``ansible-playbook`` once for
+each of the ``webservers``.
 
 Here is the same playbook as above, but using the shorthand syntax,
-'local_action', for delegating to 127.0.0.1::
+``local_action``, for delegating to 127.0.0.1::
 
     ---
     # ...
