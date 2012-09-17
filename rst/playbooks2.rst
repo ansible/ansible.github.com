@@ -450,7 +450,9 @@ Often in a playbook it may be useful to store the result of a given command in a
 it later.  Use of the command module in this way can in many ways eliminate the need to write site specific facts, for
 instance, you could test for the existance of a particular program.  
 
-The 'register' keyword decides what variable to save a result in.  The resulting variables can be used in templates, action lines, or only_if statements.  It looks like this (in an obviously trivial example)::
+The ``register`` keyword decides what variable to save a result in.  The resulting variables can be used in templates, action lines, or ``only_if`` statements.  
+Each machine in the play gets its own separate value of the register variable.
+It looks like this (in an obviously trivial example)::
 
     - name: test play
       hosts: all
