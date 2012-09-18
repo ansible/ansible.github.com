@@ -450,20 +450,23 @@ Often in a playbook it may be useful to store the result of a given command in a
 it later.  Use of the command module in this way can in many ways eliminate the need to write site specific facts, for
 instance, you could test for the existance of a particular program.  
 
-The ``register`` keyword decides what variable to save a result in.  The resulting variables can be used in templates, action lines, or ``only_if`` statements.  
+The ``register`` keyword decides what variable to save a result in.  
+The resulting variables can be used in templates, action lines, ``only_if``, or ``with_items`` statements.  
 Each machine in the play gets its own separate value of the register variable.
-It looks like this (in an obviously trivial example)::
+It looks like this::
 
-    - name: test play
-      hosts: all
-
+    ---
+    - name: Recursively set ownership and permissions of all files under a directory.
+      hosts: webservers 
+    
       tasks:
+      - name: Get list of files in /var/www
+        action: command find /var/www -type f
+        register: files
 
-          - action: shell cat /etc/motd
-            register: motd_contents
-
-          - action: shell echo "motd contains the word hi"
-            only_if: "'${motd_contents.stdout}'.find('hi') != -1"
+      - name: Set ownership and perms on files
+        action: file path=$item owner=apache group=apache mode=0644
+        with_items: ${files.stdout_lines}
 
 
 Rolling Updates
