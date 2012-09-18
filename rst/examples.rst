@@ -214,17 +214,19 @@ Limiting Selected Hosts
 
 .. versionadded:: 0.7
 
-What hosts you select to manage can be additionally constrained by using the '--limit' parameter or
+What hosts you select to manage can be additionally constrained by using the ``--limit`` parameter or
 by using 'batch' (or 'range') selectors.
 
 As mentioned above, patterns can be strung together to select hosts in more than one group::
 
     $ ansible webservers:dbservers -m command -a "/bin/foo xyz"
 
-This is an "or" condition.  If you want to further constrain the selection, use --limit, which
+This is an "or" condition.  If you want to further constrain the selection, use ``--limit``, which
 also works with ``ansible-playbook``::
 
-    $ ansible webservers:dbservers -m command -a "/bin/foo xyz" region
+    $ ansible webservers:dbservers -m command -a "/bin/foo xyz" --limit=atlanta
+
+assuming 'atlanta' is a group in your inventory.
 
 Now let's talk about range selection.   Suppose you have 1000 servers in group 'datacenter', but only want to target one at a time.  This is also easy::
 
