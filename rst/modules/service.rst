@@ -30,3 +30,5 @@ Example actions from Ansible :doc:`playbooks`::
     service name=httpd state=reloaded
     service name=foo pattern=/usr/bin/foo state=started
 
+Caveat Emptor: In some cases, the launched service may background a process, but the child process dies when the parent (service launched by ansible) finishes its task. The solution is to `nohup` the service, but this is not a facility that currently exists in the `service` module. In these cases (until the service module has nohup support) it's best to use the `command` module with `nohup` (see the `command` module's documentation).
+
