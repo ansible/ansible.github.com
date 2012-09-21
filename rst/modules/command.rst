@@ -37,3 +37,18 @@ creates and chdir can be specified after the command.  For instance, if you only
     command /usr/bin/make_database.sh arg1 arg2 creates=/path/to/database
 
 The `creates=` and `chdir` options will not be passed to the actual executable.
+
+Background Processes and init.d scripts
+---------------------------------------
+
+There may be instances where you need to use the command module to launch an init.d process, 
+which tries to daemonize the called program. For instance::
+
+    command /etc/init.d/rabbitmq-server start
+
+This may not work since the backgrounded process inside the init.d script will die when the 
+`subprocess` task that `command` launches. To resolve this, the action should instead be::
+
+    command /usr/bin/nohup /sbin/service/rabbitmq-server start
+    
+This also relates to the `service` module, which is documented separately.
