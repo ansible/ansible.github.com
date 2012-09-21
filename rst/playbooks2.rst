@@ -544,6 +544,10 @@ to determine which place sets the value of the variable.
 Therefore, if you want to set a default value for something you wish to override somewhere else, the best
 place to set such a default is in a group variable.
 
+Tip: Put defaults in a group_var file named "all". Child groups get higher priority so the "all" group
+is a great place for globals. You can then also override the groups variables with host level variables
+if needed. 
+
 Style Points
 ````````````
 
