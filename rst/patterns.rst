@@ -37,6 +37,48 @@ after the hostname with a colon.
 
     four.example.com:5309
 
+Ansible considers each hostname as unique, since it is used to do DNS lookup. This
+is important to keep in mind when testing with different ports on the same host.
+For example, the following entries would resolve to the same host::
+
+    192.168.0.10:22
+    192.168.0.10:8022
+    192.168.0.10:48022
+
+This problem can be demonstrated by the following test. Say 192.168.0.10 hosts two
+virtualboxes, Ubunto on port 8022 and CentOS on port 48022. Say the inventory then 
+makes this OS differentiation::
+
+    [ubuntu]
+    192.168.0.10:8022
+
+    [centos]
+    192.168.0.10:48022
+
+Running `ansible -i my.hosts ubuntu -m setup | grep -i "ansible_distribution\""`
+returns `"ansible_distribution": "Ubuntu"`.
+
+So let's see what happens for the centos alias::
+
+    ansible -i my.hosts centos -m setup | grep -i "ansible_distribution\""
+
+Unexpectedly, this also returns `"ansible_distribution": "Ubuntu"`.
+
+To get around this problem, keep in mind that DNS the reason ansible is doing this.
+We just need to have unique hostname entries for each port. This is done by adding 
+hostnames into your /etc/hosts folder and then using specific ports in your inventory::
+
+    # /etc/hosts
+    192.168.0.10 my-centos myubuntu
+
+    # my.hosts inventory file
+    [ubuntu]
+    my-ubuntu:8022
+    [centos]
+    my-centos:48022
+    
+Ansible will now return what you expect.
+
 In 0.6 and later, if you have a lot of hosts following similar patterns you can do this::
 
     [webservers]
